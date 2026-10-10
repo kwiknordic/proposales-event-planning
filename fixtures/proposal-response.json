@@ -1,0 +1,40 @@
+{
+  "data": {
+    "uuid": "67c008dd-7ee6-4687-bc60-1647fdf46a9a",
+    "title": "Acme Sales Kickoff – 2 days, 40 people",
+    "title_md": "Acme Sales Kickoff – 2 days, 40 people",
+    "status": "accepted",
+    "status_changed_at": 1791639218683,
+    "updated_at": 1791640075830,
+    "has_been_sent": true,
+    "company_id": 5486,
+    "company_name": "Demo Hotel",
+    "contact_name": "Hotel Contact",
+    "contact_email": "hotel@example.com",
+    "recipient_name": "Client Person",
+    "recipient_email": "client@example.com",
+    "currency": "EUR",
+    "language": "en",
+    "description_md": "A two-day conference for 40 people.",
+    "blocks": [],
+    "attachments": [],
+    "pdf_url": "https://esign.proposales.com/pdf/67c008dd-7ee6-4687-bc60-1647fdf46a9a",
+    "data": {
+      "_is_agreement": false,
+      "_number_of_minutes_valid": null,
+      "planning": {
+        "agenda": [{ "time": "09:00", "title": "Welcome" }],
+        "seating": { "layout": "classroom", "notes": "" },
+        "extras": ["Projector and screen"],
+        "requests": [{ "label": "AV", "details": "Two wireless microphones" }],
+        "attendees": [
+          { "name": "Anna Lindqvist", "diet": "Vegetarian" },
+          { "name": "Ben Carter", "diet": "" }
+        ]
+      },
+      "planning_summary": "Agenda: ...",
+      "planning_status": "submitted",
+      "planning_submitted_at": "2026-10-10T18:00:00.000Z"
+    }
+  }
+}

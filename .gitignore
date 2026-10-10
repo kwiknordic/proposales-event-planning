@@ -1,0 +1,21 @@
+# Dependencies and build output
+/node_modules
+/.next/
+/out/
+/build
+/coverage
+*.tsbuildinfo
+next-env.d.ts
+
+# Secrets: only the list of names is committed
+.env*
+!.env.example
+*:Zone.Identifier
+
+# Vercel
+.vercel
+
+# Misc
+.DS_Store
+*.pem
+npm-debug.log*

@@ -1,0 +1,85 @@
+{
+  "agenda": [
+    {
+      "time": "08:30",
+      "title": "Registration and coffee"
+    },
+    {
+      "time": "09:00",
+      "title": "Welcome and kickoff keynote"
+    },
+    {
+      "time": "10:30",
+      "title": "Breakout: regional sales plans"
+    },
+    {
+      "time": "12:00",
+      "title": "Lunch"
+    },
+    {
+      "time": "13:30",
+      "title": "Product roadmap"
+    },
+    {
+      "time": "15:00",
+      "title": "Awards and closing"
+    },
+    {
+      "time": "19:00",
+      "title": "Group dinner"
+    }
+  ],
+  "seating": {
+    "layout": "classroom",
+    "notes": "Stage at the front, two standing tables at the back for the coffee break."
+  },
+  "extras": [
+    "Projector and screen",
+    "Coffee breaks morning and afternoon",
+    "Name badges"
+  ],
+  "requests": [
+    {
+      "label": "AV",
+      "details": "Two wireless microphones and a clicker"
+    },
+    {
+      "label": "Signage",
+      "details": "Welcome sign with our logo at reception"
+    }
+  ],
+  "attendees": [
+    {
+      "name": "Anna Lindqvist",
+      "diet": "Vegetarian"
+    },
+    {
+      "name": "Ben Carter",
+      "diet": ""
+    },
+    {
+      "name": "Chloé Martin",
+      "diet": " vegetarian "
+    },
+    {
+      "name": "David Okafor",
+      "diet": "Nut allergy"
+    },
+    {
+      "name": "Emma Svensson",
+      "diet": "Gluten free"
+    },
+    {
+      "name": "Farid Haddad",
+      "diet": "Halal"
+    },
+    {
+      "name": "Grace Kim",
+      "diet": "none"
+    },
+    {
+      "name": "Hugo Berg",
+      "diet": ""
+    }
+  ]
+}
