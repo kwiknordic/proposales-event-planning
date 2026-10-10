@@ -2,9 +2,11 @@
 // The planning form on /plan/[uuid]: holds the plan being edited, composes the section cards
 // and saves through POST /api/plan. The baseline is the plan as last read from or saved to the server.
 import { useRef, useState } from "react";
-import type { Plan } from "@/lib/planning/schema";
+import { samplePlan } from "@/lib/demo";
+import { emptyPlan, type Plan } from "@/lib/planning/schema";
 import { AgendaSection } from "./AgendaSection";
 import { AttendeesSection } from "./AttendeesSection";
+import { DemoBanner } from "./DemoBanner";
 import { ExtrasSection } from "./ExtrasSection";
 import { RequestsSection } from "./RequestsSection";
 import { SeatingSection } from "./SeatingSection";
@@ -15,16 +17,18 @@ type Props = {
   initialPlan: Plan;
   initialStatus: "submitted" | null;
   initialNotifiedAt: string | null;
+  isDemo: boolean;
 };
 
 type SaveState =
   | { kind: "idle" }
   | { kind: "saving" }
+  | { kind: "resetting" }
   | { kind: "saved"; message: string }
   | { kind: "stale" }
   | { kind: "error"; message: string };
 
-export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotifiedAt }: Props) {
+export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotifiedAt, isDemo }: Props) {
   const [plan, setPlan] = useState<Plan>(initialPlan);
   const [status, setStatus] = useState(initialStatus);
   const [notifiedAt, setNotifiedAt] = useState(initialNotifiedAt);
@@ -65,8 +69,42 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
     }
   }
 
+  // One request at a time: a save during a reset (or the other way round) would race
+  const isBusy = saveState.kind === "saving" || saveState.kind === "resetting";
+
+  // Demo only: the stored plan and status go back to empty, so the first submit can be tried again
+  async function resetDemo() {
+    setSaveState({ kind: "resetting" });
+    try {
+      const response = await fetch("/api/demo/reset", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ uuid }),
+      });
+      if (!response.ok) {
+        setSaveState({ kind: "error", message: "Resetting the demo failed. Please try again." });
+        return;
+      }
+      baseline.current = emptyPlan;
+      setPlan(emptyPlan);
+      setStatus(null);
+      setNotifiedAt(null);
+      setSaveState({ kind: "saved", message: "Demo reset" });
+    } catch {
+      setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
+    }
+  }
+
   return (
     <div className="grid gap-6 mt-6">
+      {isDemo && (
+        <DemoBanner
+          // Fills the form only; the baseline stays, so saving compares against what is stored
+          onFill={() => setPlan(samplePlan)}
+          onReset={resetDemo}
+          isResetting={saveState.kind === "resetting"}
+        />
+      )}
       <div>
         <StatusBadge status={status} notifiedAt={notifiedAt} />
       </div>
@@ -90,15 +128,15 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
       <div className="grid gap-2">
         <div className="flex flex-wrap items-center gap-4">
           {status === "submitted" ? (
-            <button type="button" className="btn" onClick={() => savePlan("save")} disabled={saveState.kind === "saving"}>
+            <button type="button" className="btn" onClick={() => savePlan("save")} disabled={isBusy}>
               {saveState.kind === "saving" ? "Saving..." : "Save and update hotel"}
             </button>
           ) : (
             <>
-              <button type="button" className="btn-secondary" onClick={() => savePlan("save")} disabled={saveState.kind === "saving"}>
+              <button type="button" className="btn-secondary" onClick={() => savePlan("save")} disabled={isBusy}>
                 Save
               </button>
-              <button type="button" className="btn" onClick={() => savePlan("submit")} disabled={saveState.kind === "saving"}>
+              <button type="button" className="btn" onClick={() => savePlan("submit")} disabled={isBusy}>
                 Submit to hotel
               </button>
             </>

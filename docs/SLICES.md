@@ -139,11 +139,11 @@ Parallel:
 
 ## Slice 6: Demo banner and sample plan (domain: demo) - can run alongside 2-5
 
-**One sub-agent** owns `components/plan/DemoBanner.tsx` and `lib/demo.ts` additions (loading `fixtures/sample-plan.json`). **Lead** adds the banner to `PlanningForm.tsx` once slice 3 is in (the fill needs all sections).
+**One sub-agent** owns `components/plan/DemoBanner.tsx` and `lib/demo.ts` additions (loading `fixtures/sample-plan.json`). **Lead** adds the banner to `PlanningForm.tsx` once slice 3 is in (the fill needs all sections), and adds the demo reset: `resetPlanningData` in `lib/proposales/client.ts` and `app/api/demo/reset/route.ts` (+ tests: 403 for non-demo, 404, 200 writes the reset keys).
 
-**Accept:** the banner appears only on demo proposals; "Fill with sample plan" fills every section without saving.
+**Accept:** the banner appears only on demo proposals; "Fill with sample plan" fills every section without saving; "Reset demo" empties the stored plan and status on the real demo proposal (no email, no confirmation), and the next submit sends the "New event plan" email again.
 
-**Commit:** `slice 6: demo banner with sample plan`
+**Commit:** `slice 6: demo banner with sample plan and reset`
 
 ---
 

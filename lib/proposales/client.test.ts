@@ -1,7 +1,7 @@
 // Tests getProposal with fetch mocked: no real network calls, no real API key needed.
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import fixture from "../../fixtures/proposal-response.json";
-import { getProposal, savePlanningData } from "./client";
+import { getProposal, resetPlanningData, savePlanningData } from "./client";
 
 const UUID = "67c008dd-7ee6-4687-bc60-1647fdf46a9a";
 
@@ -88,5 +88,27 @@ describe("savePlanningData", () => {
     const fetchMock = mockFetchResponse(500);
     await expect(savePlanningData(UUID, planningData)).rejects.toThrow("500");
     expect(fetchMock).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("resetPlanningData", () => {
+  it("clears planning, then writes an empty plan and nulls the status keys", async () => {
+    const fetchMock = mockFetchResponse(200, { data: {} });
+
+    await resetPlanningData(UUID);
+
+    const bodies = fetchMock.mock.calls.map((call) => JSON.parse((call as unknown as [string, RequestInit])[1].body as string));
+    expect(bodies).toEqual([
+      { data: { planning: null } },
+      {
+        data: {
+          planning: { agenda: [], seating: { layout: "", notes: "" }, extras: [], requests: [], attendees: [] },
+          planning_summary: "",
+          planning_status: null,
+          planning_submitted_at: null,
+          planning_notified_at: null,
+        },
+      },
+    ]);
   });
 });

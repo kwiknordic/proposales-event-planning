@@ -3,6 +3,7 @@
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { PlanningForm } from "@/components/plan/PlanningForm";
+import { isDemoProposal } from "@/lib/demo";
 import { readStoredPlan } from "@/lib/planning/plan";
 import { getProposal } from "@/lib/proposales/client";
 
@@ -52,6 +53,7 @@ async function ProposalGate({ params }: { params: Promise<{ uuid: string }> }) {
         initialPlan={readStoredPlan(proposal.data.planning)}
         initialStatus={proposal.data.planning_status === "submitted" ? "submitted" : null}
         initialNotifiedAt={typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null}
+        isDemo={isDemoProposal(proposal.uuid)}
       />
     </>
   );

@@ -1,6 +1,6 @@
-// Tests for demo proposal lookup: which proposal UUIDs count as demo proposals.
+// Tests for demo proposal lookup (which UUIDs count as demo) and the sample plan used to fill the demo form.
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { getDemoProposalIds, isDemoProposal } from "./demo";
+import { getDemoProposalIds, isDemoProposal, samplePlan } from "./demo";
 
 const ACCEPTED = "11111111-1111-4111-8111-111111111111";
 const PENDING = "22222222-2222-4222-8222-222222222222";
@@ -43,5 +43,15 @@ describe("getDemoProposalIds", () => {
     vi.stubEnv("NEXT_PUBLIC_DEMO_ACCEPTED_UUID", "");
     vi.stubEnv("NEXT_PUBLIC_DEMO_PENDING_UUID", PENDING);
     expect(getDemoProposalIds()).toEqual({ accepted: null, pending: PENDING });
+  });
+});
+
+describe("samplePlan", () => {
+  it("has entries in every section so the demo shows the whole form", () => {
+    expect(samplePlan.agenda.length).toBeGreaterThan(0);
+    expect(samplePlan.seating.layout).not.toBe("");
+    expect(samplePlan.extras.length).toBeGreaterThan(0);
+    expect(samplePlan.requests.length).toBeGreaterThan(0);
+    expect(samplePlan.attendees.length).toBeGreaterThan(0);
   });
 });

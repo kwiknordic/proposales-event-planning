@@ -131,6 +131,7 @@ When `NEXT_PUBLIC_DEMO_ACCEPTED_UUID` / `NEXT_PUBLIC_DEMO_PENDING_UUID` are set:
 
 - `/demo` shows a button for each.
 - The planning page for a demo proposal shows a banner: "Demo proposal. Fill the form with a sample plan, then save or submit. Others may use this demo too." with a **Fill with sample plan** button. It fills the form from `fixtures/sample-plan.json` without saving.
+- The same banner has a **Reset demo** button (no confirmation step): it stores an empty plan and sets `planning_summary` to `""` and `planning_status`, `planning_submitted_at`, `planning_notified_at` to `null` (the API cannot delete keys; `null` reads as absent). The page then shows an empty form and "Not sent to hotel yet", so the first submit email can be tried again. No email is sent. `POST /api/demo/reset` refuses (403) any proposal that is not a demo proposal.
 
 When unset, `/demo` explains that no demo is configured, and no banner appears.
 

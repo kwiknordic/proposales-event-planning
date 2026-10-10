@@ -1,6 +1,6 @@
 // Server-side I/O for the Proposales API: read one proposal, write its planning custom data.
 // Used by the /plan/[uuid] page and its API routes; never import this from client components.
-import type { Plan } from "@/lib/planning/schema";
+import { emptyPlan, type Plan } from "@/lib/planning/schema";
 import { parseProposal, type Proposal } from "./parseProposal";
 
 const BASE_URL = "https://api.proposales.com";
@@ -44,6 +44,19 @@ export type PlanningData = {
 export async function savePlanningData(uuid: string, planningData: PlanningData): Promise<void> {
   await patchCustomData(uuid, { planning: null });
   await patchCustomData(uuid, planningData);
+}
+
+// Demo only: back to "nothing planned, not sent". The API cannot delete keys, so the status
+// keys become null, which the app reads as absent. Same clear-then-write as savePlanningData.
+export async function resetPlanningData(uuid: string): Promise<void> {
+  await patchCustomData(uuid, { planning: null });
+  await patchCustomData(uuid, {
+    planning: emptyPlan,
+    planning_summary: "",
+    planning_status: null,
+    planning_submitted_at: null,
+    planning_notified_at: null,
+  });
 }
 
 async function patchCustomData(uuid: string, customData: Record<string, unknown>): Promise<void> {
