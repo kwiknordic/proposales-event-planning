@@ -20,7 +20,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${switzer.variable} antialiased`}>
+    // Browser extensions often add classes to <html> before React loads; ignore that one element only
+    <html lang="en" className={`${switzer.variable} antialiased`} suppressHydrationWarning>
       <body>{children}</body>
     </html>
   );
