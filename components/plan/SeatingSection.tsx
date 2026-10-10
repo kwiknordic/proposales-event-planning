@@ -19,7 +19,7 @@ type Props = {
 
 export function SeatingSection({ seating, onChange }: Props) {
   const isKnownLayout = (SEATING_LAYOUTS as readonly string[]).includes(seating.layout);
-  // A layout the hotel typed in the Data panel is not in the list; keep it as an option so it is not lost.
+  // A stored layout outside the list (schema allows any text) stays an option so it is not lost.
   const hasUnknownLayout = seating.layout !== "" && !isKnownLayout;
 
   return (

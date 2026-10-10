@@ -117,7 +117,7 @@ The proposales scale factor is 1.19 on desktop (1.12 on mobile); the heading siz
 | `.input`, `.select`, `.textarea` | Form controls | height `--control-height` (textarea auto), padding `--input-padding`, `--color-surface` bg, `1px solid --color-border`, `--radius-small`; focus: border `--color-border-strong`, no glow/outline ring beyond `outline: 2px solid transparent` + visible border |
 | `.row` | One repeated row (agenda item, attendee) | grid with `gap: var(--space-3)`, inputs then a `.btn-sm` |
 | `.table` | Read-only lists (summary, landing) | full width, `border-collapse: collapse`, header `--color-surface-muted` weight 500 `--text-small`, cells padding `--space-3 --space-4`, bottom border `--color-border` |
-| `.badge` | Status ("Sent to hotel", "Needs review") | pill, `--color-badge-bg`, `--text-small`, padding `--space-1 --space-4` |
+| `.badge` | Status ("Sent to hotel", "Hotel notified of changes") | pill, `--color-badge-bg`, `--text-small`, padding `--space-1 --space-4` |
 | `.banner` | Demo banner, info strips | `--color-highlight` bg, `1px solid --color-border`, `--radius-medium`, padding `--space-4 --space-5`, flex row, space-between |
 | `.alert-error` | Errors, 409 conflict | `--color-failure-bg` bg, `--color-failure` text and 1px border, `--radius-small`, padding `--space-4` |
 | `.alert-success` | "Saved" | text `--color-success` (or a neutral card with a green dot); keep quiet |

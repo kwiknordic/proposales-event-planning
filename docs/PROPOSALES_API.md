@@ -28,7 +28,7 @@ Base URL `https://api.proposales.com`, header `Authorization: Bearer <PROPOSALES
 
 ## The hotel's view
 
-In the Proposales editor (`https://secure.proposales.com/proposals/{uuid}/edit`) the hotel has a **Data** panel showing all custom data as an editable tree. Nested lists show as collapsed nodes, which is why we also store `planning_summary` as plain text.
+In the Proposales editor (`https://secure.proposales.com/proposals/{uuid}/edit`) the hotel has a **Data** panel showing all custom data as a tree. On accepted proposals it is **read-only** (verified 2026-10-10): the hotel cannot edit the plan or its status there. Nested lists show as collapsed nodes, which is why we also store `planning_summary` as plain text.
 
 ## What the API cannot do
 

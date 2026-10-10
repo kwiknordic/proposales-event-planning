@@ -101,7 +101,7 @@ The staleness check reuses the diff, so "changed" means the same thing everywher
 4. `isStale(cleanPlan(baseline), stored)` -> 409 with the stored plan.
 5. `next = cleanPlan(plan)`; `changes = diffPlan(stored, next)`.
 6. `decision = decideNotification({ status: proposal.data.planning_status, action, changes })`.
-7. `savePlanningData(uuid, { planning: next, planning_summary: summarizePlan(next), planning_status, planning_submitted_at? })`.
+7. `savePlanningData(uuid, { planning: next, planning_summary: summarizePlan(next), planning_status, planning_submitted_at?, planning_notified_at? })`.
 8. If `decision.sendEmail`: `urgent = await flagUrgent(changes)` (empty on any failure), then `sendEmail(buildEmail(...))`. An email failure is logged and does not fail the save.
 9. Respond `{ plan: next, status }`. The form sets its baseline to `plan`.
 

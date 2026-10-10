@@ -65,9 +65,9 @@ describe("POST /api/plan (save)", () => {
     expect(savePlanningData).not.toHaveBeenCalled();
   });
 
-  it("409 with the stored plan when the hotel changed it since the page loaded", async () => {
-    const hotelEdit = { ...storedPlan, seating: { layout: "banquet", notes: "" } };
-    vi.mocked(getProposal).mockResolvedValue(acceptedProposal(hotelEdit));
+  it("409 with the stored plan when another save happened since the page loaded", async () => {
+    const otherSave = { ...storedPlan, seating: { layout: "banquet", notes: "" } };
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal(otherSave));
     const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: editedPlan });
     expect(response.status).toBe(409);
     expect((await response.json()).plan.seating.layout).toBe("banquet");

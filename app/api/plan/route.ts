@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "not_accepted" }, { status: 403 });
   }
 
-  // Never silently overwrite an edit the hotel made while the page was open
+  // Never silently overwrite a save made elsewhere (another tab, a colleague) while the page was open
   const stored = readStoredPlan(proposal.data.planning);
   if (isStale(cleanPlan(baseline), stored)) {
     return Response.json({ error: "stale", plan: stored }, { status: 409 });

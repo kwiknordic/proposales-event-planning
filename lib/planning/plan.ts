@@ -20,7 +20,7 @@ export function diffPlan(before: Plan, after: Plan): Change[] {
   ];
 }
 
-// Reuses the diff, so "the hotel changed something" means the same as "a real change" everywhere.
+// Reuses the diff, so "someone else changed something" means the same as "a real change" everywhere.
 export function isStale(baseline: Plan, stored: Plan): boolean {
   return diffPlan(baseline, stored).length > 0;
 }

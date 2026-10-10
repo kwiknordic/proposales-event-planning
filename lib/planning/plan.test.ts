@@ -36,7 +36,7 @@ describe("isStale", () => {
     expect(isStale(plan, { ...plan, agenda: [...plan.agenda].reverse() })).toBe(false);
   });
 
-  it("is true when the hotel changed something", () => {
+  it("is true when another save changed something", () => {
     expect(isStale(plan, { ...plan, seating: { layout: "banquet", notes: "" } })).toBe(true);
   });
 });

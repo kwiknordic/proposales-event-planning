@@ -70,7 +70,7 @@ Then parallel:
 **Accept:**
 - Save on the accepted demo proposal persists; a page reload shows the saved plan; the Data panel shows `planning` and a readable `planning_summary`.
 - Two saves in a row from the same open page both succeed (baseline is updated).
-- Editing `planning` in the Proposales Data panel while the page is open, then saving, gives the 409 message and reloads the hotel's version.
+- A save with an outdated baseline (another tab saved in between) gives the 409 message and reloads the stored version. (The Data panel is read-only on accepted proposals, so this is tested through the API.)
 
 **Commit:** `slice 2: plan core with agenda, seating and staleness check`
 
@@ -113,7 +113,7 @@ Parallel:
 | C: Rendering | `lib/email/buildEmail.ts` (function), `renderHtml.ts`, `renderText.ts` (+ tests) | sections in the order from `docs/PRODUCT.md`; empty sections omitted; `<script>` in a name is escaped; the subject for submitted vs updated |
 | D: Sending | `lib/email/sendEmail.ts` (+ tests) | Resend request shape (html, text, base64 CSV attachment with BOM); no config -> console output; HTTP error -> logged, does not throw |
 
-**Lead after:** route handles `submit` and the notify rule, writes `planning_status` and `planning_submitted_at`, sends the email (a failure never fails the save); `components/plan/StatusBadge.tsx`; Submit button and "Save and update hotel" in the form. Route tests for: first submit, update with change, update without change, save before submit.
+**Lead after:** route handles `submit` and the notify rule, writes `planning_status`, `planning_submitted_at` and `planning_notified_at`, sends the email (a failure never fails the save); `components/plan/StatusBadge.tsx`; Submit button and "Save and update hotel" in the form. Route tests for: first submit, update with change, update without change, save before submit.
 
 **Accept (real run, Resend configured):** first submit -> one email with the full plan, diet summary and `attendees.csv`; change one diet and save -> a second email listing that change; save without change -> no email; status badge correct in each state.
 

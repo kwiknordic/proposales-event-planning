@@ -19,7 +19,7 @@ Phase covered: **after the proposal is accepted, before the event.** Not a hotel
 ## Users
 
 - **Client** (event organizer): fills in the planning page. Reaches it through a link the hotel sends after acceptance (`https://<app>/plan/<proposal-uuid>`).
-- **Hotel** (sales or events staff): receives emails, and can read and edit the stored plan in the Proposales editor's **Data** panel.
+- **Hotel** (sales or events staff): receives emails, and can read the stored plan in the Proposales editor's **Data** panel. The panel is **read-only** on accepted proposals (verified 2026-10-10), so the hotel never edits the plan or its status.
 
 ## Planning page
 
@@ -55,7 +55,7 @@ The UUID in the URL is the only access control (a capability link). Acceptable f
 
 - **Before the first submit:** two buttons, **Save** (stores the plan, emails nobody) and **Submit to hotel** (stores the plan and emails the hotel).
 - **After the first submit:** one button, **Save and update hotel**, with the hint "The hotel is notified only when something actually changes." There is no "submit again".
-- A status badge near the top: "Not sent to hotel yet" / "Sent to hotel" / "Updated, hotel will review".
+- A status badge near the top: "Not sent to hotel yet" / "Sent to hotel" / "Hotel notified of changes" with the date and time of the last update email (`planning_notified_at`).
 
 ### Notify rule (deterministic, no AI involved)
 
@@ -63,12 +63,12 @@ The UUID in the URL is the only access control (a capability link). Acceptable f
 |---|---|---|
 | Save before the first submit | No | unchanged (absent) |
 | First submit | Yes, always ("New plan submitted"), even if nothing changed since the last save | `submitted` |
-| Save after submit, with at least one **real change** | Yes ("Plan updated", lists the changes) | `needs_review` |
+| Save after submit, with at least one **real change** | Yes ("Plan updated", lists the changes) | unchanged (`submitted`); `planning_notified_at` set to now |
 | Save after submit, no real change | No | unchanged |
 
 A **real change** is a difference after normalization (below). Retyping the same text, changing only case or whitespace, or reordering entries is **not** a change.
 
-Only the hotel clears `needs_review` (by editing the value in the Data panel). The client cannot.
+The status never depends on the hotel: it cannot edit custom data on an accepted proposal. The update emails are how the hotel learns what changed.
 
 ### Normalization and change detection
 
@@ -79,16 +79,16 @@ Only the hotel clears `needs_review` (by editing the value in the Data panel). T
 - When the number of attendees changes, the attendee diff also adds one line `Attendees: 25 -> 40` (so a headcount jump is visible at a glance, and can be flagged urgent).
 - Readable change lines, e.g. `Attendee added: Hugo Berg (vegan)`, `Hugo Berg: diet (empty) -> vegan`, `Agenda: Lunch 12:00 -> 12:30`, `Seating layout: theatre -> classroom`.
 
-### Staleness check (no lost hotel edits)
+### Staleness check (no lost edits)
 
-The hotel may edit the stored plan in the Data panel while the client has the page open. To never overwrite such an edit silently:
+The stored plan can change while the page is open: the client in another tab, or a colleague with the same link. To never overwrite such a save silently:
 
 1. The form remembers the plan it started from (the **baseline**).
 2. On save, the server reads the stored plan and compares it with the baseline (normalized).
-3. Equal: save. Different: respond **409**; the form shows "The hotel updated your plan. We reloaded it; please re-apply your change." and reloads the fresh plan.
-4. After every successful save, the form's baseline becomes the plan that was just saved. (Otherwise the client's own previous save would look like a hotel edit.)
+3. Equal: save. Different: respond **409**; the form shows "Your plan was changed somewhere else (another tab or a colleague). We reloaded it; please re-apply your change." and reloads the fresh plan.
+4. After every successful save, the form's baseline becomes the plan that was just saved. (Otherwise the client's own previous save would look like someone else's edit.)
 
-Trade-off, accepted on purpose: a client edit is refused even if it touched a different field than the hotel's edit. Concurrent edits are rare, and the rule is simple and safe.
+Trade-off, accepted on purpose: a save is refused even if it touched a different field than the other save. Concurrent edits are rare, and the rule is simple and safe.
 
 ## Stored data (on the proposal's `data` field)
 
@@ -96,8 +96,9 @@ Trade-off, accepted on purpose: a client edit is refused even if it touched a di
 |---|---|---|
 | `planning` | app | `{ agenda, seating, extras, requests, attendees }` as above |
 | `planning_summary` | app | Plain-text rendering of the whole plan, so hotel staff can read it in the Data panel without expanding nested nodes |
-| `planning_status` | app (hotel may edit) | absent, `submitted`, `needs_review` |
+| `planning_status` | app | absent, `submitted` |
 | `planning_submitted_at` | app | ISO timestamp of the first submit |
+| `planning_notified_at` | app | ISO timestamp of the last "Plan updated" email (absent until the first one) |
 
 The app never writes other keys. Proposales adds its own keys starting with `_`; ignore them.
 
@@ -141,6 +142,6 @@ Hotel-side app or dashboard, login, sending or accepting proposals (the API cann
 
 - The planning link is a capability URL (the proposal UUID). A signed token would be needed for real use.
 - The hotel has to send the planning link to the client itself; Proposales cannot show it on the client's proposal page (see `docs/PROPOSALES_API.md`).
-- A hotel edit landing between the server's read and write can still be overwritten (the API has no conditional write). The window is milliseconds.
+- A second save landing between the server's read and write can still be overwritten (the API has no conditional write). The window is milliseconds.
 - One email per real change after submit; no batching.
 - A save is two API writes (clear `planning`, then write it), because the API merges arrays by index. If the second write fails, the stored plan stays empty until the client saves again.

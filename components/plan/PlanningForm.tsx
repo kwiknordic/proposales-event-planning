@@ -35,7 +35,7 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
       const result = await response.json();
 
       if (response.status === 409) {
-        // The hotel edited the plan meanwhile: show their version, the client re-applies their change
+        // Someone saved meanwhile (another tab, a colleague): show the stored version, the client re-applies
         baseline.current = result.plan;
         setPlan(result.plan);
         setSaveState({ kind: "stale" });
@@ -46,7 +46,7 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
         return;
       }
 
-      // Otherwise the client's own save would look like a hotel edit next time
+      // Otherwise the client's own save would look like someone else's edit next time
       baseline.current = result.plan;
       setPlan(result.plan);
       setSaveState({ kind: "saved" });
@@ -62,7 +62,7 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
 
       {saveState.kind === "stale" && (
         <p className="alert-error" role="alert">
-          The hotel updated your plan. We reloaded it; please re-apply your change.
+          Your plan was changed somewhere else (another tab or a colleague). We reloaded it; please re-apply your change.
         </p>
       )}
       {saveState.kind === "error" && (

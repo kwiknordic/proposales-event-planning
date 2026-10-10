@@ -8,12 +8,12 @@ const MAX_TEXT = 500;
 const MAX_ROWS = 100;
 const MAX_ATTENDEES = 1000;
 
-// The hotel can edit the stored plan in the Data panel, where null is a common value; read it as "".
+// The Proposales API stores null as a literal value (it cannot delete keys); read it as "".
 const text = z.string().max(MAX_TEXT).nullish().transform((value) => value ?? "");
 
 const agendaItem = z.object({ time: text, title: text });
-// Layout stays a free string (not an enum) so a hotel edit in the Data panel never makes
-// the stored plan unreadable; the form only offers SEATING_LAYOUTS.
+// Layout stays a free string (not an enum) so an unexpected stored value never makes
+// the whole plan unreadable; the form only offers SEATING_LAYOUTS.
 const seating = z.object({ layout: text, notes: text });
 const request = z.object({ label: text, details: text });
 const attendee = z.object({ name: text, diet: text });
