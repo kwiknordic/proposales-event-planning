@@ -9,7 +9,7 @@ It started with a customer review asking for exactly this (`public/review.png`).
 ## Try the demo
 
 1. Open `/demo`.
-2. **Plan the event** opens an accepted demo proposal. Click **Fill with sample plan**, then **Submit to hotel**. The hotel gets a "New event plan" email with the full plan, a dietary summary and `attendees.csv`.
+2. **Plan the event** opens an accepted demo proposal. Click **Fill with sample plan**, then **Submit to hotel**. The hotel gets a "New event plan" email with the full plan, a dietary summary and `attendees.csv`. Click **See the email the hotel got** to open that exact email in a new tab.
 3. Change something real, for example give an attendee a nut allergy, and click **Save and update hotel**. The hotel gets an "Event plan updated" email listing the change. Urgent changes like allergies are flagged with `[Action needed]` and a "Needs attention" box.
 4. Reorder rows or retype text with different capitals and save again: no email, because nothing really changed.
 5. **See the locked page** opens a proposal that is not accepted yet: planning stays closed.
@@ -25,7 +25,7 @@ The demo emails go to the "hotel" inbox configured by the owner (`HOTEL_NOTIFY_E
 - **AI for one narrow judgment.** The [Jev](https://docs.typesafe.ai) model only decides which changes go at the top of an update email. Without it, every email still goes out with all changes listed.
 - **No lost edits.** If the stored plan changed while the page was open (another tab, a colleague), the save is refused and the form reloads the stored version.
 
-Stack: Next.js 16 (App Router), TypeScript, Tailwind CSS v4, zod, Vitest. Emails via Resend, Jev via plain `fetch` (no SDKs). See [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md) for a 10-minute code tour.
+Stack: Next.js 16 (App Router), TypeScript, Tailwind CSS v4, zod, Vitest. Emails via Resend, Jev via plain `fetch` (no SDKs, API-credits for Jev valid until Oct 19 2026). See [`docs/WALKTHROUGH.md`](docs/WALKTHROUGH.md) for a 10-minute code tour.
 
 ## Run locally
 
