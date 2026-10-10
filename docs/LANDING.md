@@ -31,8 +31,8 @@ Each section is its own component in `components/landing/`.
 ## 3b. What the hotel receives (`EmailPreview.tsx`)
 
 - Heading: **What the hotel receives**
-- Lead: A sample update email, with one entry in each section. It comes from the same code that sends the real ones, so this is exactly what lands in the hotel's inbox.
-- An inbox-style header (from, subject, an `attendees.csv` badge), then the email content from `renderEmailContent(sampleEmail)` (`lib/email/sampleEmail.ts`: one entry per section, one urgent nut allergy). Rendered straight into the page, no iframe and no JavaScript, so it always takes its natural height.
+- Lead: A short sample update email. It comes from the same code that sends the real ones, so this is exactly what lands in the hotel's inbox.
+- An inbox-style header (from, subject, an `attendees.csv` badge), then the email content from `renderEmailContent(sampleEmail)` (`lib/email/sampleEmail.ts`: one agenda item, extra and attendee, one urgent nut allergy; no seating or other requests, to keep it short). Rendered straight into the page, no iframe and no JavaScript, so it always takes its natural height.
 
 ## 4. What I wish I could add (`Wishlist.tsx`)
 

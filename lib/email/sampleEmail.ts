@@ -1,14 +1,14 @@
-// A small, made-up update email (one entry per section) shown on the landing page, built with
-// the same buildEmail as the real thing. Used by components/landing/EmailPreview.tsx.
+// A short, made-up update email for the landing page, built with the same buildEmail as the real thing.
+// Seating and other requests are left empty (empty sections are omitted) to keep it short. Used by EmailPreview.tsx.
 import type { Change } from "@/lib/planning/changes";
 import type { Plan } from "@/lib/planning/schema";
 import { buildEmail } from "./buildEmail";
 
 const plan: Plan = {
   agenda: [{ time: "09:00", title: "Welcome and kickoff keynote" }],
-  seating: { layout: "classroom", notes: "Stage at the front" },
+  seating: { layout: "", notes: "" },
   extras: ["Projector and screen"],
-  requests: [{ label: "AV", details: "Two wireless microphones" }],
+  requests: [],
   attendees: [{ name: "Grace Kim", diet: "Severe nut allergy" }],
 };
 

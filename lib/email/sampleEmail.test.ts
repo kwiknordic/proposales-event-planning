@@ -10,12 +10,12 @@ describe("sampleEmail", () => {
     expect(sampleEmail.changes.length).toBeGreaterThan(sampleEmail.urgentChanges.length);
   });
 
-  it("has exactly one entry in every list section, so it stays short", () => {
+  it("stays short: one entry in agenda, extras and attendees, no seating or other requests", () => {
     const { plan } = sampleEmail;
     expect(plan.agenda).toHaveLength(1);
     expect(plan.extras).toHaveLength(1);
-    expect(plan.requests).toHaveLength(1);
     expect(plan.attendees).toHaveLength(1);
-    expect(plan.seating.layout).not.toBe("");
+    expect(plan.seating).toEqual({ layout: "", notes: "" });
+    expect(plan.requests).toEqual([]);
   });
 });

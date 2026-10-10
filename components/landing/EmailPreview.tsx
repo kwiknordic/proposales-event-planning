@@ -9,7 +9,7 @@ export function EmailPreview() {
       <div className="container-wide">
         <h2>What the hotel receives</h2>
         <p className="lead mt-4 max-w-3xl">
-          A sample update email, with one entry in each section. It comes from the same code that sends the real
+          A short sample update email. It comes from the same code that sends the real
           ones, so this is exactly what lands in the hotel&apos;s inbox.
         </p>
 
