@@ -1,4 +1,4 @@
-// Renders the hotel email as one HTML document. Used by the email sender (Resend) and the server log.
+// Renders the hotel email as one HTML document (sent via Resend), and its content alone for the landing page.
 // Email clients ignore stylesheets, so every style is inline, with the hex colors from DESIGN.md.
 import type { AgendaItem, Attendee, OtherRequest, Plan } from "@/lib/planning/schema";
 import type { DietCount } from "@/lib/planning/dietSummary";
@@ -13,7 +13,8 @@ const style = {
   heading: "margin:32px 0 12px;font-size:19px;font-weight:400;color:#292929;",
   highlight: "margin:24px 0;padding:16px 20px;background:#fff6d6;border:1px solid #e0e0e0;border-radius:6px;",
   highlightHeading: "margin:0 0 8px;font-size:19px;font-weight:400;color:#292929;",
-  list: "margin:0;padding-left:20px;",
+  // Bullets set inline: some email clients and page CSS resets remove them otherwise
+  list: "margin:0;padding-left:20px;list-style:disc;",
   listItem: "margin:0 0 6px;",
   table: "width:100%;border-collapse:collapse;font-size:16px;",
   th: "padding:12px 16px;background:#eeeeee;border-bottom:1px solid #e0e0e0;font-size:14px;font-weight:500;text-align:left;",
@@ -33,14 +34,6 @@ export function escapeHtml(value: string): string {
 }
 
 export function renderHtml(email: HotelEmail): string {
-  const sections = [
-    renderHeader(email),
-    renderUrgent(email.urgentChanges),
-    renderChanges(email.changes),
-    renderPlan(email.plan),
-    renderDietSummary(email.dietSummary),
-    renderAttendees(email.plan.attendees, email.hasAttendees),
-  ];
   return [
     "<!DOCTYPE html>",
     '<html lang="en">',
@@ -49,12 +42,23 @@ export function renderHtml(email: HotelEmail): string {
     `<title>${escapeHtml(email.subject)}</title>`,
     "</head>",
     `<body style="${style.page}">`,
-    `<div style="${style.card}">`,
-    ...sections.filter((section) => section !== ""),
-    "</div>",
+    renderEmailContent(email),
     "</body>",
     "</html>",
   ].join("\n");
+}
+
+// The email card on its own, also used by the landing page preview, so the page shows exactly what is sent
+export function renderEmailContent(email: HotelEmail): string {
+  const sections = [
+    renderHeader(email),
+    renderUrgent(email.urgentChanges),
+    renderChanges(email.changes),
+    renderPlan(email.plan),
+    renderDietSummary(email.dietSummary),
+    renderAttendees(email.plan.attendees, email.hasAttendees),
+  ];
+  return [`<div style="${style.card}">`, ...sections.filter((section) => section !== ""), "</div>"].join("\n");
 }
 
 function renderHeader(email: HotelEmail): string {

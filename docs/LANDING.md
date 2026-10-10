@@ -28,6 +28,12 @@ Each section is its own component in `components/landing/`.
   3. **The hotel gets a clear email.** On submit, and again whenever something really changes: the full plan, what changed, a dietary summary for the kitchen and the guest list as a spreadsheet. Changes that need prompt attention, like a new allergy, are flagged at the top.
 - Small line under the cards: "Retyping, reordering or fixing capitalization does not send an email. Only real changes do."
 
+## 3b. What the hotel receives (`EmailPreview.tsx`)
+
+- Heading: **What the hotel receives**
+- Lead: A sample update email, with one entry in each section. It comes from the same code that sends the real ones, so this is exactly what lands in the hotel's inbox.
+- An inbox-style header (from, subject, an `attendees.csv` badge), then the email content from `renderEmailContent(sampleEmail)` (`lib/email/sampleEmail.ts`: one entry per section, one urgent nut allergy). Rendered straight into the page, no iframe and no JavaScript, so it always takes its natural height.
+
 ## 4. What I wish I could add (`Wishlist.tsx`)
 
 - Heading: **What I would add with more access**

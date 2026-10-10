@@ -1,7 +1,7 @@
 // Tests for renderHtml: section order, omitted empty sections, escaping of client text and the diet line.
 import { describe, expect, it } from "vitest";
 import type { HotelEmail } from "./buildEmail";
-import { renderHtml } from "./renderHtml";
+import { renderEmailContent, renderHtml } from "./renderHtml";
 
 const fullEmail: HotelEmail = {
   subject: "Event plan updated: Acme Sales Kickoff",
@@ -121,5 +121,21 @@ describe("renderHtml escaping", () => {
     const email: HotelEmail = { ...fullEmail, dietSummary: [{ diet: "<i>x</i>", count: 2 }] };
     const html = renderHtml(email);
     expect(html).toContain("&lt;i&gt;x&lt;/i&gt;: 2");
+  });
+});
+
+describe("renderEmailContent", () => {
+  it("is the email card without the document around it, for showing on a web page", () => {
+    const content = renderEmailContent(fullEmail);
+    expect(content).not.toContain("<html");
+    expect(content).not.toContain("<body");
+    expect(content.startsWith("<div")).toBe(true);
+    expect(renderHtml(fullEmail)).toContain(content);
+  });
+});
+
+describe("renderHtml lists", () => {
+  it("sets the bullet style inline, so page or client CSS cannot remove it", () => {
+    expect(renderHtml({ ...fullEmail, changes: ["Extra added: Flipchart"] })).toContain("list-style:disc");
   });
 });
