@@ -143,3 +143,4 @@ Hotel-side app or dashboard, login, sending or accepting proposals (the API cann
 - The hotel has to send the planning link to the client itself; Proposales cannot show it on the client's proposal page (see `docs/PROPOSALES_API.md`).
 - A hotel edit landing between the server's read and write can still be overwritten (the API has no conditional write). The window is milliseconds.
 - One email per real change after submit; no batching.
+- A save is two API writes (clear `planning`, then write it), because the API merges arrays by index. If the second write fails, the stored plan stays empty until the client saves again.

@@ -2,6 +2,8 @@
 // (accepted -> form, other status -> locked, missing -> not found). See docs/PRODUCT.md "Access".
 import { Suspense } from "react";
 import { connection } from "next/server";
+import { PlanningForm } from "@/components/plan/PlanningForm";
+import { readStoredPlan } from "@/lib/planning/plan";
 import { getProposal } from "@/lib/proposales/client";
 
 export default function PlanPage({ params }: { params: Promise<{ uuid: string }> }) {
@@ -45,9 +47,7 @@ async function ProposalGate({ params }: { params: Promise<{ uuid: string }> }) {
   return (
     <>
       <h1>{proposal.title}</h1>
-      <div className="card mt-6">
-        <p>The planning form comes in slice 2.</p>
-      </div>
+      <PlanningForm uuid={proposal.uuid} initialPlan={readStoredPlan(proposal.data.planning)} />
     </>
   );
 }

@@ -20,7 +20,7 @@ Base URL `https://api.proposales.com`, header `Authorization: Bearer <PROPOSALES
 
 - Works on `draft`, `active` and `accepted` proposals.
 - Only the keys you send are touched; other keys stay.
-- Nested **objects are deep-merged**, **arrays are replaced whole**. We always send complete `planning` sections, so this gives the expected result.
+- Nested **objects are deep-merged**, and **arrays are merged by index**: a shorter array overwrites the first elements and the old tail stays (verified 2026-10-10: sending `extras: []` over 3 extras keeps all 3). So `savePlanningData` first writes `planning: null`, then the full plan; that stores the plan exactly as sent. If the second write fails, `planning` stays `null` until the next save.
 - Sending `null` stores a literal `null`; it does **not** delete the key. There is no way to delete a key through the API. Treat `null` as empty when reading.
 - No size problem observed with 1000 attendees.
 - Proposales adds its own keys starting with `_` (e.g. `_is_agreement`). Ignore them; never write keys starting with `_`.
