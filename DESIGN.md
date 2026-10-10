@@ -8,7 +8,7 @@ Goal: the app should look like it belongs to proposales.com. Values below are ta
 
 - **Monochrome.** Black is the brand color. No blue links, no colored buttons. Color only for status (success green, failure red).
 - **Calm and spacious.** Light gray page, white cards, thin translucent borders, generous spacing.
-- **One typeface, one weight.** Switzer 400 everywhere; hierarchy comes from size, not boldness. Use 500 sparingly (labels, table headers).
+- **One typeface, one weight.** Switzer 400 everywhere; hierarchy comes from size, not boldness. Use 500 sparingly (labels, table headers); 600 only for the header name.
 - **Pill buttons** (fully rounded), square-ish inputs (4px radius).
 
 ## Rules for writing UI
@@ -106,7 +106,7 @@ The proposales scale factor is 1.19 on desktop (1.12 on mobile); the heading siz
 | Class | Use | Look |
 |---|---|---|
 | `.container`, `.container-wide` | Page width | `max-width: var(--content-width)` / `--wide-width`, centered, side padding `--space-6` |
-| `.site-header` | White header bar on every page (like the proposales.com nav island) | `--color-surface`, `--radius-small`, `max-width: var(--content-width)`, min-height 60px, name left, small `.btn` right |
+| `.site-header` | White header bar on every page (like the proposales.com nav island); the name (`.site-header-name`) is Switzer 600, 20px, black, tracking -0.03em to echo their wordmark | `--color-surface`, `--radius-small`, `max-width: var(--content-width)`, min-height 60px, name left, small `.btn` right |
 | `.section` | Vertical block on a page | `padding-block: var(--space-8)`; landing sections (`.section-landing`) use `--space-10` |
 | `.card` | Grouped form sections, info boxes | `--color-surface` background, **no border** (white on the gray page, as on proposales.com), `--radius-medium`, padding `--space-6`. No shadow |
 | `.card-dark` | The closing call to action on the landing page | `--color-black` background, white text, `.btn` inside turns white with dark text |
