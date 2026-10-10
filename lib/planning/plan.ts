@@ -3,13 +3,18 @@
 import type { Change } from "./changes";
 import { emptyPlan, planSchema, type Plan } from "./schema";
 import { cleanAgenda, diffAgenda, summarizeAgenda } from "./sections/agenda";
+import { cleanAttendees, diffAttendees, summarizeAttendees } from "./sections/attendees";
+import { cleanExtras, diffExtras, summarizeExtras } from "./sections/extras";
+import { cleanRequests, diffRequests, summarizeRequests } from "./sections/requests";
 import { cleanSeating, diffSeating, summarizeSeating } from "./sections/seating";
 
 export function cleanPlan(plan: Plan): Plan {
   return {
-    ...plan,
     agenda: cleanAgenda(plan.agenda),
     seating: cleanSeating(plan.seating),
+    extras: cleanExtras(plan.extras),
+    requests: cleanRequests(plan.requests),
+    attendees: cleanAttendees(plan.attendees),
   };
 }
 
@@ -17,6 +22,9 @@ export function diffPlan(before: Plan, after: Plan): Change[] {
   return [
     ...diffAgenda(before.agenda, after.agenda),
     ...diffSeating(before.seating, after.seating),
+    ...diffExtras(before.extras, after.extras),
+    ...diffRequests(before.requests, after.requests),
+    ...diffAttendees(before.attendees, after.attendees),
   ];
 }
 
@@ -27,7 +35,13 @@ export function isStale(baseline: Plan, stored: Plan): boolean {
 
 // Plain text for planning_summary, readable in the Proposales Data panel.
 export function summarizePlan(plan: Plan): string {
-  return [...summarizeAgenda(plan.agenda), ...summarizeSeating(plan.seating)].join("\n");
+  return [
+    ...summarizeAgenda(plan.agenda),
+    ...summarizeSeating(plan.seating),
+    ...summarizeExtras(plan.extras),
+    ...summarizeRequests(plan.requests),
+    ...summarizeAttendees(plan.attendees),
+  ].join("\n");
 }
 
 // The stored planning value comes from the proposal's custom data, which the hotel can edit freely.

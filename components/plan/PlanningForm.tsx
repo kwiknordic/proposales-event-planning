@@ -4,6 +4,9 @@
 import { useRef, useState } from "react";
 import type { Plan } from "@/lib/planning/schema";
 import { AgendaSection } from "./AgendaSection";
+import { AttendeesSection } from "./AttendeesSection";
+import { ExtrasSection } from "./ExtrasSection";
+import { RequestsSection } from "./RequestsSection";
 import { SeatingSection } from "./SeatingSection";
 
 type Props = {
@@ -59,6 +62,9 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
     <div className="grid gap-6 mt-6">
       <AgendaSection agenda={plan.agenda} onChange={(agenda) => setPlan({ ...plan, agenda })} />
       <SeatingSection seating={plan.seating} onChange={(seating) => setPlan({ ...plan, seating })} />
+      <ExtrasSection extras={plan.extras} onChange={(extras) => setPlan({ ...plan, extras })} />
+      <RequestsSection requests={plan.requests} onChange={(requests) => setPlan({ ...plan, requests })} />
+      <AttendeesSection attendees={plan.attendees} onChange={(attendees) => setPlan({ ...plan, attendees })} />
 
       {saveState.kind === "stale" && (
         <p className="alert-error" role="alert">

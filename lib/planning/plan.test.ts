@@ -41,7 +41,68 @@ describe("isStale", () => {
   });
 });
 
+const fullPlan: Plan = {
+  agenda: [{ time: "09:00", title: "Welcome" }],
+  seating: { layout: "classroom", notes: "" },
+  extras: ["Projector and screen"],
+  requests: [{ label: "AV", details: "Two mics" }],
+  attendees: [{ name: "Anna Lindqvist", diet: "Vegetarian" }],
+};
+
+describe("diffPlan on all sections", () => {
+  it("lists changes in section order: agenda, seating, extras, requests, attendees", () => {
+    const edited: Plan = {
+      agenda: [{ time: "09:30", title: "Welcome" }],
+      seating: { layout: "banquet", notes: "" },
+      extras: [],
+      requests: [{ label: "AV", details: "Three mics" }],
+      attendees: [{ name: "Anna Lindqvist", diet: "Vegan" }],
+    };
+    expect(diffPlan(fullPlan, edited).map((change) => change.section)).toEqual([
+      "agenda",
+      "seating",
+      "extras",
+      "requests",
+      "attendees",
+    ]);
+  });
+
+  it("finds no change when attendees and extras are only reordered", () => {
+    const before = { ...fullPlan, extras: ["A", "B"], attendees: [{ name: "Anna", diet: "" }, { name: "Ben", diet: "Halal" }] };
+    const after = { ...before, extras: ["b", "A"], attendees: [{ name: "Ben", diet: "halal" }, { name: "Anna", diet: "" }] };
+    expect(diffPlan(before, after)).toEqual([]);
+  });
+});
+
+describe("cleanPlan on all sections", () => {
+  it("drops empty rows in every list", () => {
+    const messy: Plan = {
+      ...fullPlan,
+      extras: [...fullPlan.extras, " "],
+      requests: [...fullPlan.requests, { label: "", details: "" }],
+      attendees: [...fullPlan.attendees, { name: "", diet: "vegan" }],
+    };
+    expect(cleanPlan(messy)).toEqual(fullPlan);
+  });
+});
+
 describe("summarizePlan", () => {
+  it("summarizes all sections in order", () => {
+    expect(summarizePlan(fullPlan)).toBe(
+      [
+        "Agenda:",
+        "- 09:00 Welcome",
+        "Seating: classroom",
+        "Extras:",
+        "- Projector and screen",
+        "Other requests:",
+        "- AV: Two mics",
+        "Attendees (1):",
+        "- Anna Lindqvist (Vegetarian)",
+      ].join("\n"),
+    );
+  });
+
   it("joins the section summaries as plain text", () => {
     expect(summarizePlan(plan)).toBe("Agenda:\n- 09:00 Welcome\n- 12:00 Lunch\nSeating: classroom");
   });
