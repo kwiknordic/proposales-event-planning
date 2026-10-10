@@ -8,32 +8,37 @@ import { AttendeesSection } from "./AttendeesSection";
 import { ExtrasSection } from "./ExtrasSection";
 import { RequestsSection } from "./RequestsSection";
 import { SeatingSection } from "./SeatingSection";
+import { StatusBadge } from "./StatusBadge";
 
 type Props = {
   uuid: string;
   initialPlan: Plan;
+  initialStatus: "submitted" | null;
+  initialNotifiedAt: string | null;
 };
 
 type SaveState =
   | { kind: "idle" }
   | { kind: "saving" }
-  | { kind: "saved" }
+  | { kind: "saved"; message: string }
   | { kind: "stale" }
   | { kind: "error"; message: string };
 
-export function PlanningForm({ uuid, initialPlan }: Props) {
+export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotifiedAt }: Props) {
   const [plan, setPlan] = useState<Plan>(initialPlan);
+  const [status, setStatus] = useState(initialStatus);
+  const [notifiedAt, setNotifiedAt] = useState(initialNotifiedAt);
   // A ref, not state: it is only read when saving, never rendered
   const baseline = useRef<Plan>(initialPlan);
   const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
 
-  async function savePlan() {
+  async function savePlan(action: "save" | "submit") {
     setSaveState({ kind: "saving" });
     try {
       const response = await fetch("/api/plan", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uuid, action: "save", baseline: baseline.current, plan }),
+        body: JSON.stringify({ uuid, action, baseline: baseline.current, plan }),
       });
       const result = await response.json();
 
@@ -52,7 +57,9 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
       // Otherwise the client's own save would look like someone else's edit next time
       baseline.current = result.plan;
       setPlan(result.plan);
-      setSaveState({ kind: "saved" });
+      setSaveState({ kind: "saved", message: savedMessage(action, status, result.notifiedAt !== notifiedAt) });
+      setStatus(result.status);
+      setNotifiedAt(result.notifiedAt);
     } catch {
       setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
     }
@@ -60,6 +67,9 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
 
   return (
     <div className="grid gap-6 mt-6">
+      <div>
+        <StatusBadge status={status} notifiedAt={notifiedAt} />
+      </div>
       <AgendaSection agenda={plan.agenda} onChange={(agenda) => setPlan({ ...plan, agenda })} />
       <SeatingSection seating={plan.seating} onChange={(seating) => setPlan({ ...plan, seating })} />
       <ExtrasSection extras={plan.extras} onChange={(extras) => setPlan({ ...plan, extras })} />
@@ -77,14 +87,37 @@ export function PlanningForm({ uuid, initialPlan }: Props) {
         </p>
       )}
 
-      <div className="flex items-center gap-4">
-        <button type="button" className="btn-secondary" onClick={savePlan} disabled={saveState.kind === "saving"}>
-          {saveState.kind === "saving" ? "Saving..." : "Save"}
-        </button>
-        {saveState.kind === "saved" && <span className="alert-success">Saved</span>}
+      <div className="grid gap-2">
+        <div className="flex flex-wrap items-center gap-4">
+          {status === "submitted" ? (
+            <button type="button" className="btn" onClick={() => savePlan("save")} disabled={saveState.kind === "saving"}>
+              {saveState.kind === "saving" ? "Saving..." : "Save and update hotel"}
+            </button>
+          ) : (
+            <>
+              <button type="button" className="btn-secondary" onClick={() => savePlan("save")} disabled={saveState.kind === "saving"}>
+                Save
+              </button>
+              <button type="button" className="btn" onClick={() => savePlan("submit")} disabled={saveState.kind === "saving"}>
+                Submit to hotel
+              </button>
+            </>
+          )}
+          {saveState.kind === "saving" && status !== "submitted" && <span className="text-muted">Saving...</span>}
+          {saveState.kind === "saved" && <span className="alert-success">{saveState.message}</span>}
+        </div>
+        {status === "submitted" && (
+          <p className="text-muted">The hotel is notified only when something actually changes.</p>
+        )}
       </div>
     </div>
   );
+}
+
+// Tells the client whether the hotel heard about this save, so "Saved" never hides a missing email
+function savedMessage(action: "save" | "submit", statusBefore: "submitted" | null, hotelNotified: boolean): string {
+  if (statusBefore !== "submitted") return action === "submit" ? "Sent to the hotel" : "Saved";
+  return hotelNotified ? "Saved, the hotel was notified" : "Saved, nothing changed for the hotel";
 }
 
 function saveErrorMessage(status: number): string {

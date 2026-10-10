@@ -47,7 +47,12 @@ async function ProposalGate({ params }: { params: Promise<{ uuid: string }> }) {
   return (
     <>
       <h1>{proposal.title}</h1>
-      <PlanningForm uuid={proposal.uuid} initialPlan={readStoredPlan(proposal.data.planning)} />
+      <PlanningForm
+        uuid={proposal.uuid}
+        initialPlan={readStoredPlan(proposal.data.planning)}
+        initialStatus={proposal.data.planning_status === "submitted" ? "submitted" : null}
+        initialNotifiedAt={typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null}
+      />
     </>
   );
 }

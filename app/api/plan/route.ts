@@ -1,13 +1,21 @@
-// POST /api/plan: the client saves the event plan. Validate, gate, staleness check, save.
-// Each step is a lib/ function; see docs/ARCHITECTURE.md "Data flow: saving the plan".
+// POST /api/plan: the client saves or submits the event plan. Validate, gate, staleness check,
+// save, then email the hotel when the notify rule says so. See docs/ARCHITECTURE.md "Data flow".
 import { z } from "zod";
-import { cleanPlan, isStale, readStoredPlan, summarizePlan } from "@/lib/planning/plan";
-import { planSchema } from "@/lib/planning/schema";
-import { getProposal, savePlanningData } from "@/lib/proposales/client";
+import { attendeesCsv } from "@/lib/email/attendeesCsv";
+import { buildEmail } from "@/lib/email/buildEmail";
+import { renderHtml } from "@/lib/email/renderHtml";
+import { renderText } from "@/lib/email/renderText";
+import { sendEmail } from "@/lib/email/sendEmail";
+import type { Change } from "@/lib/planning/changes";
+import { decideNotification } from "@/lib/planning/notifyRule";
+import { cleanPlan, diffPlan, isStale, readStoredPlan, summarizePlan } from "@/lib/planning/plan";
+import { planSchema, type Plan } from "@/lib/planning/schema";
+import { getProposal, savePlanningData, type PlanningData } from "@/lib/proposales/client";
+import type { Proposal } from "@/lib/proposales/parseProposal";
 
 const planRequestSchema = z.object({
   uuid: z.string(),
-  action: z.enum(["save"]),
+  action: z.enum(["save", "submit"]),
   baseline: planSchema,
   plan: planSchema,
 });
@@ -17,7 +25,7 @@ export async function POST(request: Request) {
   if (!body.success) {
     return Response.json({ error: "invalid_plan" }, { status: 400 });
   }
-  const { uuid, baseline, plan } = body.data;
+  const { uuid, action, baseline, plan } = body.data;
 
   const proposal = await getProposal(uuid);
   if (!proposal) {
@@ -35,12 +43,53 @@ export async function POST(request: Request) {
   }
 
   const next = cleanPlan(plan);
+  const changes = diffPlan(stored, next);
+  const decision = decideNotification({ status: readStatus(proposal), action, changes });
+  const now = new Date().toISOString();
+
+  // Only the keys that change are sent; the API leaves the others (e.g. planning_submitted_at) alone
+  const planningData: PlanningData = { planning: next, planning_summary: summarizePlan(next) };
+  if (decision.status) planningData.planning_status = decision.status;
+  if (decision.email === "submitted") planningData.planning_submitted_at = now;
+  if (decision.email === "updated") planningData.planning_notified_at = now;
+
   try {
-    await savePlanningData(uuid, { planning: next, planning_summary: summarizePlan(next) });
+    await savePlanningData(uuid, planningData);
   } catch (error) {
     console.error("Saving the plan failed", error);
     return Response.json({ error: "save_failed" }, { status: 502 });
   }
 
-  return Response.json({ plan: next, status: proposal.data.planning_status ?? null });
+  if (decision.email) {
+    await emailHotel(decision.email, proposal, next, changes);
+  }
+
+  return Response.json({
+    plan: next,
+    status: decision.status,
+    notifiedAt: planningData.planning_notified_at ?? readNotifiedAt(proposal),
+  });
+}
+
+// The plan is already saved at this point, so an email problem is logged, never returned as an error
+async function emailHotel(kind: "submitted" | "updated", proposal: Proposal, plan: Plan, changes: Change[]) {
+  try {
+    const email = buildEmail({ kind, proposal, plan, changes, urgentChanges: [] });
+    await sendEmail({
+      subject: email.subject,
+      html: renderHtml(email),
+      text: renderText(email),
+      attendeesCsv: email.hasAttendees ? attendeesCsv(email.plan.attendees) : null,
+    });
+  } catch (error) {
+    console.error("Emailing the hotel failed", error);
+  }
+}
+
+function readStatus(proposal: Proposal): string | null {
+  return typeof proposal.data.planning_status === "string" ? proposal.data.planning_status : null;
+}
+
+function readNotifiedAt(proposal: Proposal): string | null {
+  return typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null;
 }

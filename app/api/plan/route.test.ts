@@ -7,7 +7,9 @@ vi.mock("@/lib/proposales/client", () => ({
   getProposal: vi.fn(),
   savePlanningData: vi.fn(),
 }));
+vi.mock("@/lib/email/sendEmail", () => ({ sendEmail: vi.fn() }));
 
+import { sendEmail } from "@/lib/email/sendEmail";
 import { getProposal, savePlanningData } from "@/lib/proposales/client";
 import { POST } from "./route";
 
@@ -19,8 +21,13 @@ const storedPlan: Plan = {
   seating: { layout: "classroom", notes: "" },
 };
 
-function acceptedProposal(planning: unknown = storedPlan): Proposal {
-  return { uuid: UUID, title: "Acme Sales Kickoff", status: "accepted", data: { planning } };
+function acceptedProposal(planning: unknown = storedPlan, planningStatus?: string): Proposal {
+  return {
+    uuid: UUID,
+    title: "Acme Sales Kickoff",
+    status: "accepted",
+    data: planningStatus ? { planning, planning_status: planningStatus } : { planning },
+  };
 }
 
 function postPlan(body: unknown) {
@@ -38,6 +45,7 @@ const editedPlan: Plan = { ...storedPlan, agenda: [{ time: "09:30", title: "Welc
 beforeEach(() => {
   vi.mocked(getProposal).mockReset();
   vi.mocked(savePlanningData).mockReset();
+  vi.mocked(sendEmail).mockReset();
 });
 
 describe("POST /api/plan (save)", () => {
@@ -98,5 +106,75 @@ describe("POST /api/plan (save)", () => {
     vi.mocked(savePlanningData).mockRejectedValue(new Error("Proposales savePlanningData failed with status 500"));
     const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: editedPlan });
     expect(response.status).toBe(502);
+  });
+});
+
+describe("POST /api/plan (notify rule)", () => {
+  it("save before the first submit stores no status and sends no email", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: editedPlan });
+
+    expect((await response.json()).status).toBeNull();
+    const [, saved] = vi.mocked(savePlanningData).mock.calls[0];
+    expect(saved.planning_status).toBeUndefined();
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("first submit emails the full plan and stores submitted with a timestamp, even without changes", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    const response = await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: storedPlan });
+
+    const body = await response.json();
+    expect(body.status).toBe("submitted");
+    const [, saved] = vi.mocked(savePlanningData).mock.calls[0];
+    expect(saved.planning_status).toBe("submitted");
+    expect(saved.planning_submitted_at).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(saved.planning_notified_at).toBeUndefined();
+    expect(vi.mocked(sendEmail).mock.calls[0][0].subject).toBe("New event plan: Acme Sales Kickoff");
+  });
+
+  it("update with a real change emails the change and records when the hotel was notified", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal(storedPlan, "submitted"));
+    const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: editedPlan });
+
+    const body = await response.json();
+    expect(body.status).toBe("submitted");
+    expect(body.notifiedAt).toMatch(/^\d{4}-/);
+    const [, saved] = vi.mocked(savePlanningData).mock.calls[0];
+    expect(saved.planning_submitted_at).toBeUndefined();
+    expect(saved.planning_notified_at).toBe(body.notifiedAt);
+    const email = vi.mocked(sendEmail).mock.calls[0][0];
+    expect(email.subject).toBe("Event plan updated: Acme Sales Kickoff");
+    expect(email.text).toContain("Agenda: Welcome 09:00 -> 09:30");
+  });
+
+  it("update without a real change (retyped, reordered) sends no email", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal(storedPlan, "submitted"));
+    const retyped = { ...storedPlan, agenda: [{ time: "09:00", title: " WELCOME " }] };
+    const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: retyped });
+
+    expect(response.status).toBe(200);
+    expect(sendEmail).not.toHaveBeenCalled();
+    const [, saved] = vi.mocked(savePlanningData).mock.calls[0];
+    expect(saved.planning_notified_at).toBeUndefined();
+  });
+
+  it("attaches the attendees CSV only when there are attendees", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    const withAttendees = { ...storedPlan, attendees: [{ name: "Anna", diet: "vegan" }] };
+    await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: withAttendees });
+    expect(vi.mocked(sendEmail).mock.calls[0][0].attendeesCsv).toBe("name,diet\r\nAnna,vegan\r\n");
+
+    vi.mocked(sendEmail).mockReset();
+    await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: storedPlan });
+    expect(vi.mocked(sendEmail).mock.calls[0][0].attendeesCsv).toBeNull();
+  });
+
+  it("an email failure does not fail the save", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    vi.mocked(sendEmail).mockRejectedValue(new Error("boom"));
+    vi.spyOn(console, "error").mockImplementation(() => {});
+    const response = await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: storedPlan });
+    expect(response.status).toBe(200);
   });
 });
