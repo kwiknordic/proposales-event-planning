@@ -6,6 +6,7 @@ import { buildEmail } from "@/lib/email/buildEmail";
 import { renderHtml } from "@/lib/email/renderHtml";
 import { renderText } from "@/lib/email/renderText";
 import { sendEmail } from "@/lib/email/sendEmail";
+import { flagUrgent } from "@/lib/jev/flagUrgent";
 import type { Change } from "@/lib/planning/changes";
 import { decideNotification } from "@/lib/planning/notifyRule";
 import { cleanPlan, diffPlan, isStale, readStoredPlan, summarizePlan } from "@/lib/planning/plan";
@@ -74,7 +75,9 @@ export async function POST(request: Request) {
 // The plan is already saved at this point, so an email problem is logged, never returned as an error
 async function emailHotel(kind: "submitted" | "updated", proposal: Proposal, plan: Plan, changes: Change[]) {
   try {
-    const email = buildEmail({ kind, proposal, plan, changes, urgentChanges: [] });
+    // Jev only highlights; it never decides whether the email goes out. A first submit has no changes to judge.
+    const urgentChanges = kind === "updated" ? await flagUrgent(proposal.title, changes.map((change) => change.line)) : [];
+    const email = buildEmail({ kind, proposal, plan, changes, urgentChanges });
     await sendEmail({
       subject: email.subject,
       html: renderHtml(email),

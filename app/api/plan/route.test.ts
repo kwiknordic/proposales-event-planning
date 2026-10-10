@@ -8,8 +8,10 @@ vi.mock("@/lib/proposales/client", () => ({
   savePlanningData: vi.fn(),
 }));
 vi.mock("@/lib/email/sendEmail", () => ({ sendEmail: vi.fn() }));
+vi.mock("@/lib/jev/flagUrgent", () => ({ flagUrgent: vi.fn(async () => []) }));
 
 import { sendEmail } from "@/lib/email/sendEmail";
+import { flagUrgent } from "@/lib/jev/flagUrgent";
 import { getProposal, savePlanningData } from "@/lib/proposales/client";
 import { POST } from "./route";
 
@@ -176,5 +178,25 @@ describe("POST /api/plan (notify rule)", () => {
     vi.spyOn(console, "error").mockImplementation(() => {});
     const response = await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: storedPlan });
     expect(response.status).toBe(200);
+  });
+});
+
+describe("POST /api/plan (urgency flag)", () => {
+  it("puts urgent changes in the email and prefixes the subject", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal(storedPlan, "submitted"));
+    vi.mocked(flagUrgent).mockResolvedValueOnce(["Agenda: Welcome 09:00 -> 09:30"]);
+    await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: editedPlan });
+
+    expect(flagUrgent).toHaveBeenCalledWith("Acme Sales Kickoff", ["Agenda: Welcome 09:00 -> 09:30"]);
+    const email = vi.mocked(sendEmail).mock.calls[0][0];
+    expect(email.subject).toBe("[Action needed] Event plan updated: Acme Sales Kickoff");
+    expect(email.text).toContain("Needs attention");
+  });
+
+  it("does not ask Jev on a first submit", async () => {
+    vi.mocked(flagUrgent).mockClear();
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: editedPlan });
+    expect(flagUrgent).not.toHaveBeenCalled();
   });
 });
