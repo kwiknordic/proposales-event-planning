@@ -33,8 +33,9 @@ export async function getProposal(uuid: string): Promise<Proposal | null> {
 export type PlanningData = {
   planning: Plan;
   planning_summary: string;
-  planning_status?: "submitted" | "needs_review";
+  planning_status?: "submitted";
   planning_submitted_at?: string;
+  planning_notified_at?: string;
 };
 
 // The API merges arrays by index, so a shorter list would keep the old tail (verified:
