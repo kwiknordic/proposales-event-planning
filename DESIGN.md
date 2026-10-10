@@ -94,8 +94,8 @@ Goal: the app should look like it belongs to proposales.com. Values below are ta
   --input-padding: 12px;
 
   /* Layout */
-  --content-width: 760px;  /* form pages */
-  --wide-width: 1080px;    /* landing page */
+  --content-width: 712px;  /* form pages, header island (proposales.com main column) */
+  --wide-width: 1128px;    /* landing page (proposales.com main-container) */
 }
 ```
 
@@ -105,11 +105,13 @@ The proposales scale factor is 1.19 on desktop (1.12 on mobile); the heading siz
 
 | Class | Use | Look |
 |---|---|---|
-| `.container`, `.container-wide` | Page width | `max-width: var(--content-width)` / `--wide-width`, centered, side padding `--space-5` |
-| `.section` | Vertical block on a page | `padding-block: var(--space-8)`; landing sections use `--space-11` |
-| `.card` | Grouped form sections, info boxes | `--color-surface` background, `1px solid --color-border`, `--radius-medium`, padding `--space-6`. No shadow |
+| `.container`, `.container-wide` | Page width | `max-width: var(--content-width)` / `--wide-width`, centered, side padding `--space-6` |
+| `.site-header` | White header bar on every page (like the proposales.com nav island) | `--color-surface`, `--radius-small`, `max-width: var(--content-width)`, min-height 60px, name left, small `.btn` right |
+| `.section` | Vertical block on a page | `padding-block: var(--space-8)`; landing sections (`.section-landing`) use `--space-10` |
+| `.card` | Grouped form sections, info boxes | `--color-surface` background, **no border** (white on the gray page, as on proposales.com), `--radius-medium`, padding `--space-6`. No shadow |
+| `.card-dark` | The closing call to action on the landing page | `--color-black` background, white text, `.btn` inside turns white with dark text |
 | `.btn` | Primary action (Submit, Try the demo) | Pill: height `--control-height`, padding-x `--control-padding-x`, `--color-primary` bg, `--color-on-primary` text, `--font-sans` 16px weight 400, no border, `transition: background-color .2s`; hover `--color-primary-hover`; disabled 40% opacity, `cursor: not-allowed` |
-| `.btn-secondary` | Save, Add row, Back | Same shape, `--color-surface` bg, `--color-text` text, `1px solid --color-border`; hover border `--color-border-strong` |
+| `.btn-secondary` | Save, Add row, Back | Same shape, `--color-surface-muted` bg (light gray), `--color-heading` text, no border; hover `--color-neutral-200` |
 | `.btn-sm` | Row actions (Remove, Add attendee) | height `--control-height-small`, padding-x `--control-padding-x-small`, `--text-small` |
 | `.btn-link` | Inline text actions | No background, underline on hover, `--color-primary` |
 | `.field` | Label + input wrapper | `display: grid; gap: var(--space-2)` |
@@ -122,7 +124,8 @@ The proposales scale factor is 1.19 on desktop (1.12 on mobile); the heading siz
 | `.alert-error` | Errors, 409 conflict | `--color-failure-bg` bg, `--color-failure` text and 1px border, `--radius-small`, padding `--space-4` |
 | `.alert-success` | "Saved" | text `--color-success` (or a neutral card with a green dot); keep quiet |
 | `.text-muted` | Hints, captions | `--color-text-muted`, `--text-small` |
-| `.text-display` | Landing hero heading | `--text-display`, line-height 1.1, `--tracking-heading` |
+| `.text-display` | Landing hero heading | `--text-display`, line-height 1.1, `--tracking-heading`; `--text-h1` below 768px |
+| `.heading-muted` | Faded second line of a heading (proposales.com headline style) | `--color-heading` at 50% |
 | `.lead` | Intro paragraphs | `--text-lead`, `--color-text-muted` |
 | `.quote` | The review quote on the landing page | `--text-lead`, left border 2px `--color-primary`, padding-left `--space-6`, `--color-heading` |
 | `.grid-cards` | Rows of cards (landing steps, demo page) | `display: grid; gap: var(--space-6)`; 1 column on mobile, `repeat(auto-fit, minmax(240px, 1fr))` from 768px |

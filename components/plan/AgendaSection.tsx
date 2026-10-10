@@ -53,7 +53,7 @@ export function AgendaSection({ agenda, onChange }: Props) {
         );
       })}
 
-      <button type="button" className="btn-secondary btn-sm" onClick={addItem}>
+      <button type="button" className="btn-secondary btn-sm justify-self-start" onClick={addItem}>
         Add agenda item
       </button>
     </section>

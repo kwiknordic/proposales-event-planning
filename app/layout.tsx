@@ -1,6 +1,7 @@
 // Root layout for every page: loads the self-hosted Switzer font and the design system CSS.
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { SiteHeader } from "@/components/SiteHeader";
 import "./globals.css";
 
 const switzer = localFont({
@@ -22,7 +23,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     // Browser extensions often add classes to <html> before React loads; ignore that one element only
     <html lang="en" className={`${switzer.variable} antialiased`} suppressHydrationWarning>
-      <body>{children}</body>
+      <body>
+        <SiteHeader />
+        {children}
+      </body>
     </html>
   );
 }

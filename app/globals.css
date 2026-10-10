@@ -74,8 +74,8 @@
   --input-padding: 12px;
 
   /* Layout */
-  --content-width: 760px;
-  --wide-width: 1080px;
+  --content-width: 712px;  /* proposales.com main column (same width as its nav island) */
+  --wide-width: 1128px;    /* proposales.com main-container */
 }
 
 /* Base elements */
@@ -122,13 +122,33 @@ button:focus-visible {
 .container,
 .container-wide {
   margin-inline: auto;
-  padding-inline: var(--space-5);
+  padding-inline: var(--space-6);
 }
 .container { max-width: var(--content-width); }
 .container-wide { max-width: var(--wide-width); }
 
 .section { padding-block: var(--space-8); }
-.section-landing { padding-block: var(--space-11); }
+.section-landing { padding-block: var(--space-10); }
+
+/* Site header: a white "island" bar like the proposales.com navigation */
+.site-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  max-width: var(--content-width);
+  min-height: 60px;
+  margin: var(--space-4) auto 0;
+  padding-inline: var(--space-5);
+  background: var(--color-surface);
+  border-radius: var(--radius-small);
+}
+.site-header-name {
+  color: var(--color-heading);
+  font-size: var(--text-lead);
+  letter-spacing: var(--tracking-heading);
+  text-decoration: none;
+}
 
 .grid-cards {
   display: grid;
@@ -139,12 +159,28 @@ button:focus-visible {
 }
 
 /* Surfaces */
+/* Borderless white on the gray page, as on proposales.com */
 .card {
   background: var(--color-surface);
-  border: 1px solid var(--color-border);
   border-radius: var(--radius-medium);
   padding: var(--space-6);
 }
+
+/* The black closing box (proposales.com footer call to action) */
+.card-dark {
+  background: var(--color-black);
+  color: var(--color-on-primary);
+  border-radius: var(--radius-medium);
+  padding: var(--space-9) var(--space-6);
+}
+.card-dark h2 { color: var(--color-on-primary); }
+.card-dark .lead,
+.card-dark .text-muted { color: color-mix(in srgb, var(--color-white) 70%, transparent); }
+.card-dark .btn {
+  background: var(--color-surface);
+  color: var(--color-heading);
+}
+.card-dark .btn:hover { background: var(--color-surface-muted); }
 
 .banner {
   display: flex;
@@ -197,12 +233,13 @@ button:focus-visible {
   border: none;
 }
 .btn:hover { background: var(--color-primary-hover); }
+/* Light gray pill without a border, like "Try for free" on proposales.com */
 .btn-secondary {
-  background: var(--color-surface);
-  color: var(--color-text);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface-muted);
+  color: var(--color-heading);
+  border: none;
 }
-.btn-secondary:hover { border-color: var(--color-border-strong); }
+.btn-secondary:hover { background: var(--color-neutral-200); }
 .btn:disabled,
 .btn-secondary:disabled {
   opacity: 0.4;
@@ -287,10 +324,16 @@ button:focus-visible {
   color: var(--color-text-muted);
   font-size: var(--text-small);
 }
+/* The faded second line of a heading, as in proposales.com section titles */
+.heading-muted { color: color-mix(in srgb, var(--color-heading) 50%, transparent); }
+
 .text-display {
   font-size: var(--text-display);
   line-height: 1.1;
   letter-spacing: var(--tracking-heading);
+}
+@media (max-width: 767px) {
+  .text-display { font-size: var(--text-h1); }
 }
 .lead {
   font-size: var(--text-lead);

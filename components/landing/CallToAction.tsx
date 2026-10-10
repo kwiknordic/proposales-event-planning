@@ -7,7 +7,7 @@ export function CallToAction() {
   return (
     <section className="section-landing">
       <div className="container-wide">
-        <div className="card text-center py-12">
+        <div className="card-dark text-center">
           <h2>See it in action</h2>
           <p className="lead mt-4">
             Open a demo proposal, fill it with a sample plan in one click, and submit it to the
