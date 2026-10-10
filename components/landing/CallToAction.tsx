@@ -17,7 +17,7 @@ export function CallToAction() {
             Open the demo
           </Link>
           <p className="text-muted mt-6">
-            Built as a prototype on the Proposales API. Demo data is shared, so you may see other
+            Built by Mervin Bratic as a prototype on the Proposales API. Demo data is shared, so you may see other
             visitors&apos; changes.
           </p>
         </div>

@@ -1,10 +1,10 @@
-// Landing page (/): why we built this, what it does, what we would add, and the way to the demo.
+// Landing page (/): why I built this, what it does, what I would add, and the way to the demo.
 // Copy lives in the section components; see docs/LANDING.md.
 import { CallToAction } from "@/components/landing/CallToAction";
 import { Hero } from "@/components/landing/Hero";
 import { Lessons } from "@/components/landing/Lessons";
 import { Problem } from "@/components/landing/Problem";
-import { WhatWeBuilt } from "@/components/landing/WhatWeBuilt";
+import { WhatIBuilt } from "@/components/landing/WhatIBuilt";
 import { Wishlist } from "@/components/landing/Wishlist";
 
 export default function LandingPage() {
@@ -12,7 +12,7 @@ export default function LandingPage() {
     <main>
       <Hero />
       <Problem />
-      <WhatWeBuilt />
+      <WhatIBuilt />
       <Wishlist />
       <Lessons />
       <CallToAction />

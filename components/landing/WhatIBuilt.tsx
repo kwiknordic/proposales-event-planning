@@ -16,11 +16,11 @@ const steps = [
   },
 ];
 
-export function WhatWeBuilt() {
+export function WhatIBuilt() {
   return (
     <section className="section-landing">
       <div className="container-wide">
-        <h2>What we built</h2>
+        <h2>What I built</h2>
         <div className="grid-cards mt-8">
           {steps.map((step, index) => (
             <div className="card" key={step.title}>

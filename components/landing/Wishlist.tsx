@@ -1,4 +1,4 @@
-// Landing page section 4: what we would add to the Proposales API with more access.
+// Landing page section 4: what I would add to the Proposales API with more access.
 // Used by app/page.tsx.
 
 const wishes = [
@@ -24,9 +24,9 @@ export function Wishlist() {
   return (
     <section className="section-landing">
       <div className="container-wide">
-        <h2>What we would add with more access</h2>
+        <h2>What I would add with more access</h2>
         <p className="lead mt-4 max-w-3xl">
-          Some of the best parts of this are not possible through the Proposales API today. These are our suggestions:
+          Some of the best parts of this are not possible through the Proposales API today. These are my suggestions:
         </p>
         <ul className="mt-8 grid gap-5 max-w-3xl">
           {wishes.map((wish) => (

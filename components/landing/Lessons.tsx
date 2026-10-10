@@ -1,4 +1,4 @@
-// Landing section "What we learned building it": four short lessons from the build.
+// Landing section "What I learned building it": four short lessons from the build.
 // Used in app/page.tsx. Copy is final (docs/LANDING.md section 5).
 
 const lessons = [
@@ -8,7 +8,7 @@ const lessons = [
   },
   {
     title: "Trust the real API over the docs.",
-    text: "Calling the API early and writing tests against its real responses saved us from bugs that unit tests alone could not catch.",
+    text: "Calling the API early and writing tests against its real responses saved me from bugs that unit tests alone could not catch.",
   },
   {
     title: "Simple rules beat clever ones.",
@@ -16,7 +16,7 @@ const lessons = [
   },
   {
     title: "AI where it clearly helps.",
-    text: "We use a model for one narrow judgment, whether a change is urgent, and only to decide what goes on top of the email. It never decides whether the hotel hears about a change.",
+    text: "I use a model for one narrow judgment, whether a change is urgent, and only to decide what goes on top of the email. It never decides whether the hotel hears about a change.",
   },
 ];
 
@@ -24,7 +24,7 @@ export function Lessons() {
   return (
     <section className="section-landing">
       <div className="container-wide">
-        <h2>What we learned building it</h2>
+        <h2>What I learned building it</h2>
         <div className="mt-8 grid gap-8 md:grid-cols-2">
           {lessons.map((lesson) => (
             <div key={lesson.title}>
