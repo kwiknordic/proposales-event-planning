@@ -1,5 +1,5 @@
 // Tests for POST /api/plan (save): the handler is called directly, the Proposales client is mocked.
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { emptyPlan, type Plan } from "@/lib/planning/schema";
 import type { Proposal } from "@/lib/proposales/parseProposal";
 
@@ -198,5 +198,34 @@ describe("POST /api/plan (urgency flag)", () => {
     vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
     await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: editedPlan });
     expect(flagUrgent).not.toHaveBeenCalled();
+  });
+});
+
+describe("POST /api/plan (email preview for demo proposals)", () => {
+  afterEach(() => {
+    vi.unstubAllEnvs();
+  });
+
+  it("returns the sent email's HTML for a demo proposal, so reviewers can open it", async () => {
+    vi.stubEnv("NEXT_PUBLIC_DEMO_ACCEPTED_UUID", UUID);
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    const response = await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: storedPlan });
+
+    const body = await response.json();
+    expect(body.emailPreview).toContain("<!DOCTYPE html>");
+    expect(body.emailPreview).toBe(vi.mocked(sendEmail).mock.calls[0][0].html);
+  });
+
+  it("never returns it for a real proposal", async () => {
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    const response = await postPlan({ uuid: UUID, action: "submit", baseline: storedPlan, plan: storedPlan });
+    expect((await response.json()).emailPreview).toBeUndefined();
+  });
+
+  it("does not return it when no email was sent", async () => {
+    vi.stubEnv("NEXT_PUBLIC_DEMO_ACCEPTED_UUID", UUID);
+    vi.mocked(getProposal).mockResolvedValue(acceptedProposal());
+    const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: editedPlan });
+    expect((await response.json()).emailPreview).toBeUndefined();
   });
 });

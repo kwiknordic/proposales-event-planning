@@ -32,6 +32,13 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
   const [plan, setPlan] = useState<Plan>(initialPlan);
   const [status, setStatus] = useState(initialStatus);
   const [notifiedAt, setNotifiedAt] = useState(initialNotifiedAt);
+  // Demo only: a browser-local link to the email the hotel just got, so reviewers can see behind the curtain
+  const [emailPreviewUrl, setEmailPreviewUrl] = useState<string | null>(null);
+
+  function showEmailPreview(html: string | undefined) {
+    if (emailPreviewUrl) URL.revokeObjectURL(emailPreviewUrl);
+    setEmailPreviewUrl(html ? URL.createObjectURL(new Blob([html], { type: "text/html" })) : null);
+  }
   // A ref, not state: it is only read when saving, never rendered
   const baseline = useRef<Plan>(initialPlan);
   const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
@@ -64,6 +71,7 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
       setSaveState({ kind: "saved", message: savedMessage(action, status, result.notifiedAt !== notifiedAt) });
       setStatus(result.status);
       setNotifiedAt(result.notifiedAt);
+      showEmailPreview(result.emailPreview);
     } catch {
       setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
     }
@@ -89,6 +97,7 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
       setPlan(emptyPlan);
       setStatus(null);
       setNotifiedAt(null);
+      showEmailPreview(undefined);
       setSaveState({ kind: "saved", message: "Demo reset" });
     } catch {
       setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
@@ -143,6 +152,11 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
           )}
           {saveState.kind === "saving" && status !== "submitted" && <span className="text-muted">Saving...</span>}
           {saveState.kind === "saved" && <span className="alert-success">{saveState.message}</span>}
+          {emailPreviewUrl && (
+            <a href={emailPreviewUrl} target="_blank" rel="noopener noreferrer">
+              See the email the hotel got
+            </a>
+          )}
         </div>
         {status === "submitted" && (
           <p className="text-muted">The hotel is notified only when something actually changes.</p>

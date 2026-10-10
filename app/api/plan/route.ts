@@ -1,6 +1,7 @@
 // POST /api/plan: the client saves or submits the event plan. Validate, gate, staleness check,
 // save, then email the hotel when the notify rule says so. See docs/ARCHITECTURE.md "Data flow".
 import { z } from "zod";
+import { isDemoProposal } from "@/lib/demo";
 import { attendeesCsv } from "@/lib/email/attendeesCsv";
 import { buildEmail } from "@/lib/email/buildEmail";
 import { renderHtml } from "@/lib/email/renderHtml";
@@ -61,31 +62,40 @@ export async function POST(request: Request) {
     return Response.json({ error: "save_failed" }, { status: 502 });
   }
 
-  if (decision.email) {
-    await emailHotel(decision.email, proposal, next, changes);
-  }
+  const sentEmailHtml = decision.email ? await emailHotel(decision.email, proposal, next, changes) : null;
 
   return Response.json({
     plan: next,
     status: decision.status,
     notifiedAt: planningData.planning_notified_at ?? readNotifiedAt(proposal),
+    // Demo only: lets a reviewer open the exact email the hotel just got. Real clients never see it.
+    ...(sentEmailHtml && isDemoProposal(uuid) ? { emailPreview: sentEmailHtml } : {}),
   });
 }
 
-// The plan is already saved at this point, so an email problem is logged, never returned as an error
-async function emailHotel(kind: "submitted" | "updated", proposal: Proposal, plan: Plan, changes: Change[]) {
+// The plan is already saved at this point, so an email problem is logged, never returned as an error.
+// Returns the email's HTML, or null when building it failed.
+async function emailHotel(
+  kind: "submitted" | "updated",
+  proposal: Proposal,
+  plan: Plan,
+  changes: Change[],
+): Promise<string | null> {
   try {
     // Jev only highlights; it never decides whether the email goes out. A first submit has no changes to judge.
     const urgentChanges = kind === "updated" ? await flagUrgent(proposal.title, changes.map((change) => change.line)) : [];
     const email = buildEmail({ kind, proposal, plan, changes, urgentChanges });
+    const html = renderHtml(email);
     await sendEmail({
       subject: email.subject,
-      html: renderHtml(email),
+      html,
       text: renderText(email),
       attendeesCsv: email.hasAttendees ? attendeesCsv(email.plan.attendees) : null,
     });
+    return html;
   } catch (error) {
     console.error("Emailing the hotel failed", error);
+    return null;
   }
 }
 
