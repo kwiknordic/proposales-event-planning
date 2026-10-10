@@ -35,7 +35,7 @@ Each section is its own component in `components/landing/`.
 - List (each item: bold title + one sentence):
   - **A "Plan your event" button on the accepted proposal.** Today the hotel has to send the planning link separately, because the client's proposal page cannot show a link from the API.
   - **An event when a proposal is accepted.** Then the planning link could be emailed to the client automatically, the moment they say yes.
-  - **Safe concurrent edits.** A version check on proposal data, so a client's save and a hotel's edit can never cross.
+  - **Safe concurrent edits.** A version check on proposal data, so two saves can never cross.
   - **Cleaning up data.** A way to remove a stored value, not only to blank it.
 
 ## 5. What we learned (`Lessons.tsx`)

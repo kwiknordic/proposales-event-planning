@@ -7,9 +7,8 @@ export default function DemoPage() {
   const noDemo = accepted === null && pending === null;
 
   return (
-    <main className="container section">
-      <h1>Demo</h1>
-      <p className="lead mt-4">Two real proposals on the demo account. Open one to see the planning form or the locked page.</p>
+    <main className="container-wide section">
+      <h1>Try the demo</h1>
 
       {noDemo ? (
         <div className="card mt-6">
@@ -18,28 +17,34 @@ export default function DemoPage() {
       ) : (
         <div className="grid-cards mt-6">
           {accepted !== null && (
-            <div className="card">
-              <h3>Acme Sales Kickoff - 2 days, 40 people</h3>
-              <p className="text-muted mt-2">Accepted: opens the planning form.</p>
-              <div className="mt-4">
-                <Link className="btn" href={`/plan/${accepted}`}>Open planning form</Link>
-              </div>
+            <div className="card grid gap-3 content-start">
+              <h3>Accepted proposal</h3>
+              <p>Acme Sales Kickoff, 2 days, 40 people. The client has accepted, so planning is open.</p>
+              <Link className="btn justify-self-start mt-2" href={`/plan/${accepted}`}>
+                Plan the event
+              </Link>
             </div>
           )}
           {pending !== null && (
-            <div className="card">
-              <h3>Nordic Tech Summit - 1 day, 120 people</h3>
-              <p className="text-muted mt-2">Not accepted yet: shows the locked page.</p>
-              <div className="mt-4">
-                <Link className="btn-secondary" href={`/plan/${pending}`}>Open locked page</Link>
-              </div>
+            <div className="card grid gap-3 content-start">
+              <h3>Not yet accepted</h3>
+              <p>
+                Nordic Tech Summit, 1 day, 120 people. Planning opens only after acceptance; see what the client
+                sees before that.
+              </p>
+              <Link className="btn-secondary justify-self-start mt-2" href={`/plan/${pending}`}>
+                See the locked page
+              </Link>
             </div>
           )}
         </div>
       )}
 
+      <p className="text-muted mt-6">
+        In the real flow, the hotel sends the client a link to their own planning page after acceptance.
+      </p>
       <p className="mt-6">
-        <Link className="btn-link" href="/">Back to home</Link>
+        <Link href="/">Back to the start</Link>
       </p>
     </main>
   );

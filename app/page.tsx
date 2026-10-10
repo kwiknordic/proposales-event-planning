@@ -1,17 +1,21 @@
-// Placeholder home page (slice 0): a visual check of the design system until the landing page (slice 7).
-export default function HomePage() {
+// Landing page (/): why we built this, what it does, what we would add, and the way to the demo.
+// Copy lives in the section components; see docs/LANDING.md.
+import { CallToAction } from "@/components/landing/CallToAction";
+import { Hero } from "@/components/landing/Hero";
+import { Lessons } from "@/components/landing/Lessons";
+import { Problem } from "@/components/landing/Problem";
+import { WhatWeBuilt } from "@/components/landing/WhatWeBuilt";
+import { Wishlist } from "@/components/landing/Wishlist";
+
+export default function LandingPage() {
   return (
-    <main className="container section">
-      <h1>Event planning for Proposales</h1>
-      <p className="lead mt-4">Design system check: heading, buttons and a card.</p>
-      <div className="flex gap-4 mt-6">
-        <button className="btn">Primary action</button>
-        <button className="btn-secondary">Secondary</button>
-      </div>
-      <div className="card mt-6">
-        <h3>A card</h3>
-        <p className="text-muted mt-2">White surface, thin border, no shadow.</p>
-      </div>
+    <main>
+      <Hero />
+      <Problem />
+      <WhatWeBuilt />
+      <Wishlist />
+      <Lessons />
+      <CallToAction />
     </main>
   );
 }
