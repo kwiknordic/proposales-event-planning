@@ -38,16 +38,7 @@ Each section is its own component in `components/landing/`.
   - **Safe concurrent edits.** A version check on proposal data, so two saves can never cross.
   - **Cleaning up data.** A way to remove a stored value, not only to blank it.
 
-## 5. What I learned (`Lessons.tsx`)
-
-- Heading: **What I learned building it**
-- Four short items in a two-column grid (one column on mobile), each a title and one or two sentences:
-  - **Test what the client sees.** The hotel's editor and the client's proposal page render the same proposal differently. A feature is only done when it works on the client's side.
-  - **Trust the real API over the docs.** Calling the API early and writing tests against its real responses saved me from bugs that unit tests alone could not catch.
-  - **Simple rules beat clever ones.** Whether the hotel is emailed follows a small, fixed rule that anyone can read and test. Simple checks are easier to trust, explain and change.
-  - **AI where it clearly helps.** I use a model for one narrow judgment, whether a change is urgent, and only to decide what goes on top of the email. It never decides whether the hotel hears about a change.
-
-## 6. Call to action (`CallToAction.tsx`)
+## 5. Call to action (`CallToAction.tsx`)
 
 - Heading: **See it in action**
 - Text: Open a demo proposal, fill it with a sample plan in one click, and submit it to the "hotel".

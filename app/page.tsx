@@ -2,7 +2,6 @@
 // Copy lives in the section components; see docs/LANDING.md.
 import { CallToAction } from "@/components/landing/CallToAction";
 import { Hero } from "@/components/landing/Hero";
-import { Lessons } from "@/components/landing/Lessons";
 import { Problem } from "@/components/landing/Problem";
 import { WhatIBuilt } from "@/components/landing/WhatIBuilt";
 import { Wishlist } from "@/components/landing/Wishlist";
@@ -14,7 +13,6 @@ export default function LandingPage() {
       <Problem />
       <WhatIBuilt />
       <Wishlist />
-      <Lessons />
       <CallToAction />
     </main>
   );

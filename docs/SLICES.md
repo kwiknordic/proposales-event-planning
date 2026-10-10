@@ -151,7 +151,7 @@ Parallel:
 
 **Goal:** `/` per `docs/LANDING.md`, styled per `DESIGN.md`, responsive.
 
-Parallel: one sub-agent per section component in `components/landing/` (Hero, Problem, WhatWeBuilt, Wishlist, Lessons, CallToAction). **Lead** composes `app/page.tsx` and checks the whole page on a narrow and a wide screen.
+Parallel: one sub-agent per section component in `components/landing/` (Hero, Problem, WhatIBuilt, Wishlist, CallToAction). **Lead** composes `app/page.tsx` and checks the whole page on a narrow and a wide screen.
 
 **Accept:** all sections present with the copy from `docs/LANDING.md`; the review image shows; the CTA goes to `/demo`; no inline styles.
 
