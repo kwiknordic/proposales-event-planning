@@ -45,6 +45,8 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
 
   async function savePlan(action: "save" | "submit") {
     setSaveState({ kind: "saving" });
+    // Hide the old link right away, so it is never unclear which email it opens
+    showEmailPreview(undefined);
     try {
       const response = await fetch("/api/plan", {
         method: "POST",
@@ -83,6 +85,7 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
   // Demo only: the stored plan and status go back to empty, so the first submit can be tried again
   async function resetDemo() {
     setSaveState({ kind: "resetting" });
+    showEmailPreview(undefined);
     try {
       const response = await fetch("/api/demo/reset", {
         method: "POST",
@@ -97,7 +100,6 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
       setPlan(emptyPlan);
       setStatus(null);
       setNotifiedAt(null);
-      showEmailPreview(undefined);
       setSaveState({ kind: "saved", message: "Demo reset" });
     } catch {
       setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
