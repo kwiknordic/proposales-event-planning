@@ -1,6 +1,3 @@
-// Landing section "AI use": where the Jev model is used, why, its guardrails, and the AI idea not built.
-// Used by app/page.tsx, after "What the hotel receives".
-
 export function AiUse() {
   return (
     <section className="section-landing">

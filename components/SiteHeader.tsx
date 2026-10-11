@@ -1,5 +1,3 @@
-// The white header bar on every page (like the proposales.com navigation): name home, demo button.
-// Used by app/layout.tsx.
 import Link from "next/link";
 
 export function SiteHeader() {

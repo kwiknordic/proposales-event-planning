@@ -1,5 +1,3 @@
-/* Design system for the whole app: tokens and reusable component classes, modeled on proposales.com.
-   Pages compose these classes; Tailwind utilities are only for one-off layout. */
 @import "tailwindcss";
 
 :root {

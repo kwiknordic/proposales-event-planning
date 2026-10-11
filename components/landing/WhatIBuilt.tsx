@@ -1,6 +1,3 @@
-// Landing page section 3: the three steps of the flow (client plans, plan lives on the proposal, hotel gets an email).
-// Used by app/page.tsx.
-
 const steps = [
   {
     title: "The client plans",

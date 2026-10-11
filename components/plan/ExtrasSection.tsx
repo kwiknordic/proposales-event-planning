@@ -1,5 +1,4 @@
 "use client";
-// The extras card of the event plan form (one text row per extra). Used by the plan page; state lives in the parent.
 type Props = {
   extras: string[];
   onChange: (extras: string[]) => void;

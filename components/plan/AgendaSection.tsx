@@ -1,5 +1,4 @@
 "use client";
-// The agenda card of the event plan form (time + title rows). Used by the plan page; state lives in the parent.
 import type { AgendaItem } from "@/lib/planning/schema";
 
 type Props = {

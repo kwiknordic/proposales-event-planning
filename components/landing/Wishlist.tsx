@@ -1,6 +1,3 @@
-// Landing page section: what I would add with more access (to the Proposales API, or to an LLM).
-// Used by app/page.tsx.
-
 const wishes = [
   {
     title: 'A "Plan your event" button on the accepted proposal.',

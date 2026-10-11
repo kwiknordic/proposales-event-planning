@@ -1,5 +1,3 @@
-// Landing page hero: headline, pitch, and the two entry points (demo, why I built it).
-// Used by app/page.tsx.
 import Link from "next/link";
 
 export function Hero() {

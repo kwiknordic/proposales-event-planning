@@ -1,4 +1,3 @@
-// Root layout for every page: loads the self-hosted Switzer font and the design system CSS.
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import { SiteHeader } from "@/components/SiteHeader";

@@ -78,8 +78,6 @@ npm run dev             # http://localhost:3000
 
 Checks: `npm test`, `npx tsc --noEmit`, `npm run build`.
 
-To deploy, push to GitHub, import the repo in Vercel and set the variables above in the Vercel project. Never commit `.env`.
-
 Stack: Next.js 16, TypeScript, Tailwind CSS v4, zod and Vitest. Resend and Jev are called with plain `fetch`, no SDKs.
 
 ## Known limitations
@@ -89,8 +87,6 @@ Stack: Next.js 16, TypeScript, Tailwind CSS v4, zod and Vitest. Resend and Jev a
 - **The hotel cannot edit the plan in Proposales.** The Data panel is read-only on accepted proposals; changes come from the client's page only.
 - **A save is two API writes.** The API merges arrays by index, so a shorter list would keep old entries. Each save first clears the plan, then writes it. If the second write fails, the stored plan stays empty until the client saves again.
 - **A narrow overwrite window.** The API has no conditional write, so a save landing between the server's read and write (milliseconds) can still be overwritten.
-- **One email per real change** after the first submit; no batching.
-- **Demo emails reach one inbox.** Without a verified domain, Resend only sends from `onboarding@resend.dev` to the account owner.
 
 ## Where things are
 

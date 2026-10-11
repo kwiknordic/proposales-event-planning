@@ -1,5 +1,4 @@
 "use client";
-// The demo banner on the planning page of a demo proposal: fill the form with the sample plan, or reset the demo. Used by the plan page; the parent does the work.
 type Props = {
   onFill: () => void;
   onReset: () => void;

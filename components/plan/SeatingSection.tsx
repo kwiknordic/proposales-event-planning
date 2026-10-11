@@ -1,6 +1,4 @@
 "use client";
-// The Seating card of the event plan: layout dropdown and notes. Rendered by the plan form page;
-// holds no state, so the form stays the single source of truth for the plan.
 import { SEATING_LAYOUTS, type Seating } from "@/lib/planning/schema";
 
 const LAYOUT_LABELS: Record<(typeof SEATING_LAYOUTS)[number], string> = {

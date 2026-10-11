@@ -1,5 +1,3 @@
-// Landing page section 2: where the idea came from, the customer's quote and the original review image.
-// Used by app/page.tsx (anchor #why is the target of the hero's secondary link).
 import Image from "next/image";
 
 export function Problem() {

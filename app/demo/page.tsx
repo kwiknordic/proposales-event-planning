@@ -1,4 +1,3 @@
-// Demo entry page (/demo): links to the two demo proposals, or explains that none is configured.
 import Link from "next/link";
 import { getDemoProposalIds } from "@/lib/demo";
 

@@ -1,5 +1,4 @@
 "use client";
-// The other requests card of the event plan form (label + details rows). Used by the plan page; state lives in the parent.
 import type { OtherRequest } from "@/lib/planning/schema";
 
 type Props = {

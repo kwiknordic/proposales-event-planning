@@ -1,5 +1,3 @@
-// Landing section: what the hotel receives, shown with the real email renderer and a small sample.
-// Used by app/page.tsx, after "What I built".
 import { renderEmailContent } from "@/lib/email/renderHtml";
 import { sampleEmail } from "@/lib/email/sampleEmail";
 

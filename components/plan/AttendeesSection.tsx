@@ -1,5 +1,4 @@
 "use client";
-// The attendees card of the event plan form (name + diet rows, and a paste box). Used by the plan page; the list state lives in the parent.
 import { useState } from "react";
 import type { Attendee } from "@/lib/planning/schema";
 import { cleanAttendees, parsePastedAttendees } from "@/lib/planning/sections/attendees";

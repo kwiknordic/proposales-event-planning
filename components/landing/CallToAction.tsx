@@ -1,6 +1,3 @@
-// Landing section "See it in action": the closing call to open the demo at /demo.
-// Used in app/page.tsx.
-
 import Link from "next/link";
 
 export function CallToAction() {
