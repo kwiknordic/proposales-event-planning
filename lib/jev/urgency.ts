@@ -57,7 +57,7 @@ function readAnswers(response: unknown): Record<string, unknown> | null {
   if (typeof response !== "object" || response === null || !("answers" in response)) {
     return null;
   }
-  const answers = (response as { answers: unknown }).answers;
+  const answers = response.answers;
   if (typeof answers !== "object" || answers === null) {
     return null;
   }
@@ -68,6 +68,6 @@ function isUrgentNoul(answer: unknown, threshold: number): boolean {
   if (typeof answer !== "object" || answer === null || !("noul" in answer)) {
     return false;
   }
-  const noul = (answer as { noul: unknown }).noul;
+  const noul = answer.noul;
   return typeof noul === "number" && noul >= threshold;
 }
