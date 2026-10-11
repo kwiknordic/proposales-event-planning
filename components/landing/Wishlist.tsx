@@ -1,4 +1,4 @@
-// Landing page section 4: what I would add to the Proposales API with more access.
+// Landing page section: what I would add with more access (to the Proposales API, or to an LLM).
 // Used by app/page.tsx.
 
 const wishes = [
@@ -18,6 +18,10 @@ const wishes = [
     title: "Cleaning up data.",
     text: "A way to remove a stored value, not only to blank it.",
   },
+  {
+    title: "Import a plan from any file.",
+    text: "With LLM credits, the client could drop in an email, a PDF or a spreadsheet, and get a draft plan to review before saving.",
+  },
 ];
 
 export function Wishlist() {
@@ -26,7 +30,7 @@ export function Wishlist() {
       <div className="container-wide">
         <h2>What I would add with more access</h2>
         <p className="lead mt-4 max-w-3xl">
-          Some of the best parts of this are not possible through the Proposales API today. These are my suggestions:
+          Some of the best parts of this are not possible today, through the Proposales API or without LLM credits. These are my suggestions:
         </p>
         <ul className="mt-8 grid gap-5 max-w-3xl">
           {wishes.map((wish) => (

@@ -12,7 +12,7 @@ const steps = [
   },
   {
     title: "The hotel gets a clear email",
-    text: "On submit, and again whenever something really changes: the full plan, what changed, a dietary summary for the kitchen and the guest list as a spreadsheet. Changes that need prompt attention, like a new allergy, are flagged at the top.",
+    text: "On submit, and again whenever something really changes: the full plan, what changed, a dietary summary for the kitchen and the guest list as a spreadsheet.",
   },
 ];
 

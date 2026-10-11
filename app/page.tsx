@@ -1,5 +1,6 @@
 // Landing page (/): why I built this, what it does, what I would add, and the way to the demo.
 // Copy lives in the section components; see docs/LANDING.md.
+import { AiUse } from "@/components/landing/AiUse";
 import { CallToAction } from "@/components/landing/CallToAction";
 import { EmailPreview } from "@/components/landing/EmailPreview";
 import { Hero } from "@/components/landing/Hero";
@@ -14,6 +15,7 @@ export default function LandingPage() {
       <Problem />
       <WhatIBuilt />
       <EmailPreview />
+      <AiUse />
       <Wishlist />
       <CallToAction />
     </main>
