@@ -4,7 +4,7 @@ After a client accepts a proposal, hotels still chase them for the agenda, seati
 
 Built by Mervin Bratic as a prototype on the [Proposales](https://proposales.com) API with the help of Claude.
 
-**Live:** `<add the Vercel URL here>`
+**Live:** [`Event planning`](https://proposales-event-planning.vercel.app/)
 
 ## It started with a review
 
