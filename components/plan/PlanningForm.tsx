@@ -14,6 +14,7 @@ import { StatusBadge } from "./StatusBadge";
 
 type Props = {
   uuid: string;
+  title: string;
   initialPlan: Plan;
   initialStatus: "submitted" | null;
   initialNotifiedAt: string | null;
@@ -28,7 +29,7 @@ type SaveState =
   | { kind: "stale" }
   | { kind: "error"; message: string };
 
-export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotifiedAt, isDemo }: Props) {
+export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialNotifiedAt, isDemo }: Props) {
   const [plan, setPlan] = useState<Plan>(initialPlan);
   const [status, setStatus] = useState(initialStatus);
   const [notifiedAt, setNotifiedAt] = useState(initialNotifiedAt);
@@ -107,7 +108,12 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
   }
 
   return (
-    <div className="grid gap-6 mt-6">
+    <div className="grid gap-6">
+      {/* The heading lives here so the status badge above it updates after every save */}
+      <header className="grid gap-3 justify-items-start">
+        <StatusBadge status={status} notifiedAt={notifiedAt} />
+        <h1>{title}</h1>
+      </header>
       {isDemo && (
         <DemoBanner
           // Fills the form only; the baseline stays, so saving compares against what is stored
@@ -116,9 +122,6 @@ export function PlanningForm({ uuid, initialPlan, initialStatus, initialNotified
           isResetting={saveState.kind === "resetting"}
         />
       )}
-      <div>
-        <StatusBadge status={status} notifiedAt={notifiedAt} />
-      </div>
       <AgendaSection agenda={plan.agenda} onChange={(agenda) => setPlan({ ...plan, agenda })} />
       <SeatingSection seating={plan.seating} onChange={(seating) => setPlan({ ...plan, seating })} />
       <ExtrasSection extras={plan.extras} onChange={(extras) => setPlan({ ...plan, extras })} />

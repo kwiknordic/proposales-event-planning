@@ -9,11 +9,11 @@ type Props = {
 };
 
 export function StatusBadge({ status, notifiedAt }: Props) {
-  if (status !== "submitted") return <span className="badge">Not sent to hotel yet</span>;
-  if (!notifiedAt) return <span className="badge">Sent to hotel</span>;
+  if (status !== "submitted") return <span className="badge">Status: Not sent to hotel yet</span>;
+  if (!notifiedAt) return <span className="badge">Status: Sent to hotel</span>;
   return (
     <span className="badge">
-      Hotel notified of changes <LocalTime iso={notifiedAt} />
+      Status: Hotel notified of changes <LocalTime iso={notifiedAt} />
     </span>
   );
 }

@@ -40,21 +40,19 @@ async function ProposalGate({ params }: { params: Promise<{ uuid: string }> }) {
     return (
       <div className="card">
         <p className="text-muted">{proposal.title}</p>
-        <h1 className="mt-2">Event planning opens after you accept the proposal</h1>
+        <h1 className="mt-2">Event planning opens <em className="underline">after</em> you accept the proposal</h1>
       </div>
     );
   }
 
   return (
-    <>
-      <h1>{proposal.title}</h1>
-      <PlanningForm
-        uuid={proposal.uuid}
-        initialPlan={readStoredPlan(proposal.data.planning)}
-        initialStatus={proposal.data.planning_status === "submitted" ? "submitted" : null}
-        initialNotifiedAt={typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null}
-        isDemo={isDemoProposal(proposal.uuid)}
-      />
-    </>
+    <PlanningForm
+      uuid={proposal.uuid}
+      title={proposal.title}
+      initialPlan={readStoredPlan(proposal.data.planning)}
+      initialStatus={proposal.data.planning_status === "submitted" ? "submitted" : null}
+      initialNotifiedAt={typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null}
+      isDemo={isDemoProposal(proposal.uuid)}
+    />
   );
 }
