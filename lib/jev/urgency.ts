@@ -24,13 +24,18 @@ function urgencyInstructions(id: string): string {
   return `Consider only the change with id "${id}". Does it need the hotel's prompt attention, for example a new or changed allergy or dietary need, a large change in the number of attendees, or a change of date or time?`;
 }
 
-export function buildUrgencyRequest(eventTitle: string, changeLines: string[]): object {
-  const changes = changeLines
-    .slice(0, MAX_CHANGES)
-    .map((text, index) => ({ id: changeId(index), text }));
+// The batched request body: every change is its own noul question, all sharing one state.
+export type UrgencyRequest = {
+  model: string;
+  state: { event: string; changes: { id: string; text: string }[] };
+  questions: Record<string, { type: "noul"; instructions: string }>;
+};
+
+export function buildUrgencyRequest(eventTitle: string, changeLines: string[]): UrgencyRequest {
+  const changes = changeLines.slice(0, MAX_CHANGES).map((text, index) => ({ id: changeId(index), text }));
 
   const questions = Object.fromEntries(
-    changes.map(({ id }) => [id, { type: "noul", instructions: urgencyInstructions(id) }]),
+    changes.map(({ id }) => [id, { type: "noul" as const, instructions: urgencyInstructions(id) }]),
   );
 
   return {
@@ -61,6 +66,7 @@ function readAnswers(response: unknown): Record<string, unknown> | null {
   if (typeof answers !== "object" || answers === null) {
     return null;
   }
+  // Safe: answers is a non-null object, and every value is read as unknown and checked by isUrgentNoul.
   return answers as Record<string, unknown>;
 }
 

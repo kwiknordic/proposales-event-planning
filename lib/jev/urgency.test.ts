@@ -28,10 +28,7 @@ describe("buildUrgencyRequest", () => {
   it("includes only the first 20 of 25 changes", () => {
     const lines = Array.from({ length: 25 }, (_, index) => `change ${index}`);
 
-    const request = buildUrgencyRequest("Event", lines) as {
-      state: { changes: { id: string }[] };
-      questions: Record<string, unknown>;
-    };
+    const request = buildUrgencyRequest("Event", lines);
 
     expect(MAX_CHANGES).toBe(20);
     expect(request.state.changes).toHaveLength(20);

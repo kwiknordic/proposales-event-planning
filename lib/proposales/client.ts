@@ -59,7 +59,10 @@ export async function resetPlanningData(uuid: string): Promise<void> {
   });
 }
 
-async function patchCustomData(uuid: string, customData: Record<string, unknown>): Promise<void> {
+// What one PATCH may carry: any of the planning keys, with null clearing a key (the API cannot delete).
+type CustomDataPatch = { [Key in keyof PlanningData]?: PlanningData[Key] | null };
+
+async function patchCustomData(uuid: string, customData: CustomDataPatch): Promise<void> {
   const response = await fetch(`${BASE_URL}/v3/proposals/${uuid}/data`, {
     method: "PATCH",
     headers: {

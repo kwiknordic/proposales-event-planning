@@ -69,21 +69,23 @@ export async function POST(request: Request) {
     status: decision.status,
     notifiedAt: planningData.planning_notified_at ?? readNotifiedAt(proposal),
     // Demo only: lets a reviewer open the exact email the hotel just got. Real clients never see it.
-    ...(sentEmailHtml && isDemoProposal(uuid) ? { emailPreview: sentEmailHtml } : {}),
+    // undefined leaves the key out of the JSON, so real clients get no emailPreview field at all
+    emailPreview: sentEmailHtml && isDemoProposal(uuid) ? sentEmailHtml : undefined,
   });
 }
 
 // The plan is already saved at this point, so an email problem is logged, never returned as an error.
 // Returns the email's HTML, or null when building it failed.
-async function emailHotel(
-  kind: EmailKind,
-  proposal: Proposal,
-  plan: Plan,
-  changes: Change[],
-): Promise<string | null> {
+async function emailHotel(kind: EmailKind, proposal: Proposal, plan: Plan, changes: Change[]): Promise<string | null> {
   try {
     // Jev only highlights; it never decides whether the email goes out. A first submit has no changes to judge.
-    const urgentChanges = kind === "updated" ? await flagUrgent(proposal.title, changes.map((change) => change.line)) : [];
+    const urgentChanges =
+      kind === "updated"
+        ? await flagUrgent(
+            proposal.title,
+            changes.map((change) => change.line),
+          )
+        : [];
     const email = buildEmail({ kind, proposal, plan, changes, urgentChanges });
     const html = renderHtml(email);
     await sendEmail({

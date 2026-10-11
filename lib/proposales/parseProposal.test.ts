@@ -29,7 +29,7 @@ describe("parseProposal", () => {
   });
 
   it("throws when the response has no proposal", () => {
-    expect(() => parseProposal({})).toThrow();
-    expect(() => parseProposal(null)).toThrow();
+    expect(() => parseProposal({})).toThrow("missing proposal");
+    expect(() => parseProposal(null)).toThrow("missing proposal");
   });
 });

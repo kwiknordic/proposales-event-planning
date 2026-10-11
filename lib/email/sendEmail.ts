@@ -52,16 +52,15 @@ function buildResendBody(message: RenderedEmail, notifyEmail: string) {
     subject: message.subject,
     html: message.html,
     text: message.text,
-    ...(message.attendeesCsv === null
-      ? {}
-      : {
-          attachments: [
-            {
-              filename: "attendees.csv",
-              content: Buffer.from(UTF8_BOM + message.attendeesCsv, "utf8").toString("base64"),
-            },
-          ],
-        }),
+    // undefined leaves the key out of the JSON body, so an email without attendees has no attachments field
+    attachments: message.attendeesCsv === null ? undefined : [attendeesAttachment(message.attendeesCsv)],
+  };
+}
+
+function attendeesAttachment(csv: string) {
+  return {
+    filename: "attendees.csv",
+    content: Buffer.from(UTF8_BOM + csv, "utf8").toString("base64"),
   };
 }
 
