@@ -1,5 +1,5 @@
 // POST /api/plan: the client saves or submits the event plan. Validate, gate, staleness check,
-// save, then email the hotel when the notify rule says so. See docs/ARCHITECTURE.md "Data flow".
+// save, then email the hotel when the notify rule says so. Each step is one lib/ function.
 import { z } from "zod";
 import { isDemoProposal } from "@/lib/demo";
 import { attendeesCsv } from "@/lib/email/attendeesCsv";

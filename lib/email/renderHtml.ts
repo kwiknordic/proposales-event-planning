@@ -1,5 +1,5 @@
 // Renders the hotel email as one HTML document (sent via Resend), and its content alone for the landing page.
-// Email clients ignore stylesheets, so every style is inline, with the hex colors from DESIGN.md.
+// Email clients ignore stylesheets, so every style is inline, with the same hex colors as app/globals.css.
 import type { AgendaItem, Attendee, OtherRequest, Plan } from "@/lib/planning/schema";
 import type { DietCount } from "@/lib/planning/dietSummary";
 import type { HotelEmail } from "./buildEmail";

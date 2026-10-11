@@ -1,7 +1,7 @@
 // Pure Jev urgency logic: builds the batched noul request and reads which changes are urgent.
 // Used by lib/jev/flagUrgent.ts; no I/O here so it can be tested and shown on its own.
 
-// Tuned in slice 5 against the real API (2026-10-10, noul per change, stable over two runs):
+// Tuned against the real API (2026-10-10, noul per change, stable over two runs):
 //   urgent:     severe nut allergy added 0.97, headcount 25 -> 40 0.95-0.96,
 //               diet (empty) -> gluten free 0.93, vegan -> vegan, nut allergy 0.93,
 //               attendee added (halal) 0.88, lunch 12:00 -> 13:30 0.83
@@ -19,7 +19,7 @@ export function changeId(index: number): string {
   return `c${index}`;
 }
 
-// The instructions are the wording agreed in docs/JEV.md; only the id changes per question.
+// One fixed wording for every change; only the id differs per question.
 function urgencyInstructions(id: string): string {
   return `Consider only the change with id "${id}". Does it need the hotel's prompt attention, for example a new or changed allergy or dietary need, a large change in the number of attendees, or a change of date or time?`;
 }

@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Do not let `next dev` generate instruction files for AI coding agents; README.md is the only documentation
+  agentRules: false,
   cacheComponents: true,
   partialPrefetching: true,
   turbopack: {

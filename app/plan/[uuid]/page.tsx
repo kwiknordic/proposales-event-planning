@@ -1,5 +1,5 @@
 // Planning page for one proposal: loads it fresh on every request and applies the gate
-// (accepted -> form, other status -> locked, missing -> not found). See docs/PRODUCT.md "Access".
+// (accepted -> form, other status -> locked, missing -> not found).
 import { Suspense } from "react";
 import { connection } from "next/server";
 import { PlanningForm } from "@/components/plan/PlanningForm";

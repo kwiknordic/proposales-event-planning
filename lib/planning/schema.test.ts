@@ -1,4 +1,4 @@
-// Tests for the plan schema: shape, defaults and the server-side limits from docs/PRODUCT.md.
+// Tests for the plan schema: shape, defaults and the server-side limits.
 import { describe, expect, it } from "vitest";
 import samplePlan from "@/fixtures/sample-plan.json";
 import { emptyPlan, planSchema } from "./schema";

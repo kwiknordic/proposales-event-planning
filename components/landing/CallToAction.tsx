@@ -1,5 +1,5 @@
 // Landing section "See it in action": the closing call to open the demo at /demo.
-// Used in app/page.tsx. Copy is final (docs/LANDING.md section 6).
+// Used in app/page.tsx.
 
 import Link from "next/link";
 
@@ -17,7 +17,7 @@ export function CallToAction() {
             Open the demo
           </Link>
           <p className="text-muted mt-6">
-            Built by Mervin Bratic as a prototype on the Proposales API. Demo data is shared, so you may see other
+            Built by Mervin Bratic as a prototype on the Proposales API with the help of Claude. Demo data is shared, so you may see other
             visitors&apos; changes.
           </p>
         </div>

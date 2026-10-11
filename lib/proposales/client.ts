@@ -29,7 +29,7 @@ export async function getProposal(uuid: string): Promise<Proposal | null> {
   return parseProposal(await response.json());
 }
 
-// The only keys the app ever writes on a proposal (docs/PRODUCT.md "Stored data").
+// The only keys the app ever writes on a proposal.
 export type PlanningData = {
   planning: Plan;
   planning_summary: string;

@@ -1,4 +1,4 @@
-// The event plan: zod schema (all five sections, limits from docs/PRODUCT.md) and the types
+// The event plan: zod schema (all five sections, with server-side limits) and the types
 // derived from it. Used to validate API requests and to read the plan stored on a proposal.
 import { z } from "zod";
 
