@@ -9,7 +9,10 @@ import { buildEmail } from "./buildEmail";
 const uuid = "11111111-2222-3333-4444-555555555555";
 
 const plan: Plan = {
-  agenda: [{ time: "09:00", title: "Welcome" }, { time: " ", title: "" }],
+  agenda: [
+    { time: "09:00", title: "Welcome" },
+    { time: " ", title: "" },
+  ],
   seating: { layout: "classroom", notes: "" },
   extras: ["Projector"],
   requests: [],
@@ -64,9 +67,7 @@ describe("buildEmail proposal", () => {
 
 describe("buildEmail changes", () => {
   it("lists the change lines for an update", () => {
-    expect(buildEmail(input({ kind: "updated", changes: [change] })).changes).toEqual([
-      "Extras added: Name badges",
-    ]);
+    expect(buildEmail(input({ kind: "updated", changes: [change] })).changes).toEqual(["Extras added: Name badges"]);
   });
 
   it("lists no changes for a first submit, even if some were passed in", () => {

@@ -61,7 +61,5 @@ function dietLine(dietSummary: DietCount[]): string {
 // "Anna Lindqvist: Vegetarian"; an empty diet is shown as the name alone.
 function attendeeLines(attendees: Attendee[], hasAttendees: boolean): string[] {
   if (!hasAttendees) return [];
-  return attendees.map((attendee) =>
-    attendee.diet === "" ? attendee.name : `${attendee.name}: ${attendee.diet}`,
-  );
+  return attendees.map((attendee) => (attendee.diet === "" ? attendee.name : `${attendee.name}: ${attendee.diet}`));
 }

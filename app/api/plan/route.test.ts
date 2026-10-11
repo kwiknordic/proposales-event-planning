@@ -57,7 +57,12 @@ describe("POST /api/plan (save)", () => {
   });
 
   it("400 when the plan breaks the schema", async () => {
-    const response = await postPlan({ uuid: UUID, action: "save", baseline: storedPlan, plan: { extras: ["x".repeat(501)] } });
+    const response = await postPlan({
+      uuid: UUID,
+      action: "save",
+      baseline: storedPlan,
+      plan: { extras: ["x".repeat(501)] },
+    });
     expect(response.status).toBe(400);
     expect(getProposal).not.toHaveBeenCalled();
   });

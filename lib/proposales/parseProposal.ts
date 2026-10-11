@@ -22,11 +22,7 @@ export function parseProposal(raw: unknown): Proposal {
   const proposal = raw.data;
   const customData = isRecord(proposal.data) ? proposal.data : {};
 
-  if (
-    typeof proposal.uuid !== "string" ||
-    typeof proposal.title !== "string" ||
-    typeof proposal.status !== "string"
-  ) {
+  if (typeof proposal.uuid !== "string" || typeof proposal.title !== "string" || typeof proposal.status !== "string") {
     throw new Error("Unexpected Proposales response: uuid, title or status is not a string");
   }
 

@@ -7,8 +7,14 @@ const byName = (attendee: Attendee) => attendee.name;
 
 describe("matchByIdentity", () => {
   it("pairs entries with the same identity regardless of order", () => {
-    const before = [{ name: "Anna", diet: "" }, { name: "Ben", diet: "" }];
-    const after = [{ name: "Ben", diet: "vegan" }, { name: "Anna", diet: "" }];
+    const before = [
+      { name: "Anna", diet: "" },
+      { name: "Ben", diet: "" },
+    ];
+    const after = [
+      { name: "Ben", diet: "vegan" },
+      { name: "Anna", diet: "" },
+    ];
     const result = matchByIdentity(before, after, byName);
     expect(result.pairs).toEqual([
       [before[0], after[1]],
@@ -30,7 +36,10 @@ describe("matchByIdentity", () => {
   });
 
   it("pairs duplicate identities in order", () => {
-    const before = [{ name: "Sam", diet: "vegan" }, { name: "Sam", diet: "" }];
+    const before = [
+      { name: "Sam", diet: "vegan" },
+      { name: "Sam", diet: "" },
+    ];
     const after = [{ name: "Sam", diet: "vegan" }];
     const result = matchByIdentity(before, after, byName);
     expect(result.pairs).toEqual([[before[0], after[0]]]);

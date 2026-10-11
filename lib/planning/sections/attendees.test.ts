@@ -4,21 +4,29 @@ import { cleanAttendees, diffAttendees, parsePastedAttendees, summarizeAttendees
 
 describe("cleanAttendees", () => {
   it("trims name and diet", () => {
-    expect(cleanAttendees([{ name: " Anna ", diet: " vegetarian " }])).toEqual([
-      { name: "Anna", diet: "vegetarian" },
-    ]);
+    expect(cleanAttendees([{ name: " Anna ", diet: " vegetarian " }])).toEqual([{ name: "Anna", diet: "vegetarian" }]);
   });
 
   it("drops rows without a name, even when a diet is given", () => {
-    const attendees = [{ name: "  ", diet: "vegan" }, { name: "", diet: "" }, { name: "Ben", diet: "" }];
+    const attendees = [
+      { name: "  ", diet: "vegan" },
+      { name: "", diet: "" },
+      { name: "Ben", diet: "" },
+    ];
     expect(cleanAttendees(attendees)).toEqual([{ name: "Ben", diet: "" }]);
   });
 });
 
 describe("diffAttendees", () => {
   it("reports no change when attendees are only reordered", () => {
-    const before = [{ name: "Anna", diet: "" }, { name: "Ben", diet: "vegan" }];
-    const after = [{ name: "Ben", diet: "vegan" }, { name: "Anna", diet: "" }];
+    const before = [
+      { name: "Anna", diet: "" },
+      { name: "Ben", diet: "vegan" },
+    ];
+    const after = [
+      { name: "Ben", diet: "vegan" },
+      { name: "Anna", diet: "" },
+    ];
     expect(diffAttendees(before, after)).toEqual([]);
   });
 
@@ -37,8 +45,15 @@ describe("diffAttendees", () => {
   });
 
   it("reports a count line when attendees are added", () => {
-    const before = [{ name: "Anna", diet: "" }, { name: "Ben", diet: "" }];
-    const after = [{ name: "Anna", diet: "" }, { name: "Ben", diet: "" }, { name: "Cara", diet: "" }];
+    const before = [
+      { name: "Anna", diet: "" },
+      { name: "Ben", diet: "" },
+    ];
+    const after = [
+      { name: "Anna", diet: "" },
+      { name: "Ben", diet: "" },
+      { name: "Cara", diet: "" },
+    ];
     expect(diffAttendees(before, after)).toEqual([
       { section: "attendees", kind: "changed", line: "Attendees: 2 -> 3" },
       { section: "attendees", kind: "added", line: "Attendee added: Cara" },
@@ -53,7 +68,10 @@ describe("diffAttendees", () => {
   });
 
   it("writes added attendees with and without diet", () => {
-    const after = [{ name: "Hugo Berg", diet: "vegan" }, { name: "Ida", diet: "" }];
+    const after = [
+      { name: "Hugo Berg", diet: "vegan" },
+      { name: "Ida", diet: "" },
+    ];
     expect(diffAttendees([], after)).toEqual([
       { section: "attendees", kind: "changed", line: "Attendees: 0 -> 2" },
       { section: "attendees", kind: "added", line: "Attendee added: Hugo Berg (vegan)" },
@@ -62,7 +80,10 @@ describe("diffAttendees", () => {
   });
 
   it("writes removed attendees with and without diet", () => {
-    const before = [{ name: "Hugo Berg", diet: "vegan" }, { name: "Ida", diet: "" }];
+    const before = [
+      { name: "Hugo Berg", diet: "vegan" },
+      { name: "Ida", diet: "" },
+    ];
     expect(diffAttendees(before, [])).toEqual([
       { section: "attendees", kind: "changed", line: "Attendees: 2 -> 0" },
       { section: "attendees", kind: "removed", line: "Attendee removed: Hugo Berg (vegan)" },
@@ -71,8 +92,14 @@ describe("diffAttendees", () => {
   });
 
   it("pairs duplicate names in order", () => {
-    const before = [{ name: "Sam", diet: "" }, { name: "Sam", diet: "" }];
-    const after = [{ name: "Sam", diet: "vegan" }, { name: "Sam", diet: "" }];
+    const before = [
+      { name: "Sam", diet: "" },
+      { name: "Sam", diet: "" },
+    ];
+    const after = [
+      { name: "Sam", diet: "vegan" },
+      { name: "Sam", diet: "" },
+    ];
     expect(diffAttendees(before, after)).toEqual([
       { section: "attendees", kind: "changed", line: "Sam: diet (empty) -> vegan" },
     ]);
@@ -98,11 +125,7 @@ describe("summarizeAttendees", () => {
       { name: "Anna Lindqvist", diet: "Vegetarian" },
       { name: "Ben Carter", diet: "" },
     ];
-    expect(summarizeAttendees(attendees)).toEqual([
-      "Attendees (2):",
-      "- Anna Lindqvist (Vegetarian)",
-      "- Ben Carter",
-    ]);
+    expect(summarizeAttendees(attendees)).toEqual(["Attendees (2):", "- Anna Lindqvist (Vegetarian)", "- Ben Carter"]);
   });
 });
 

@@ -133,7 +133,10 @@ function renderOtherRequests(requests: OtherRequest[]): string {
 function renderDietSummary(dietSummary: DietCount[]): string {
   if (dietSummary.length === 0) return "";
   const line = dietSummary.map((entry) => `${entry.diet}: ${entry.count}`).join(", ");
-  return [`<h2 style="${style.heading}">Dietary summary</h2>`, `<p style="${style.muted}">${escapeHtml(line)}</p>`].join("\n");
+  return [
+    `<h2 style="${style.heading}">Dietary summary</h2>`,
+    `<p style="${style.muted}">${escapeHtml(line)}</p>`,
+  ].join("\n");
 }
 
 function renderAttendees(attendees: Attendee[], hasAttendees: boolean): string {

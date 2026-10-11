@@ -7,15 +7,24 @@ const oneChange: Change = { section: "agenda", kind: "added", line: "Agenda adde
 
 describe("decideNotification", () => {
   it("saves before the first submit without an email and keeps the status absent", () => {
-    expect(decideNotification({ status: null, action: "save", changes: [oneChange] })).toEqual({ email: null, status: null });
+    expect(decideNotification({ status: null, action: "save", changes: [oneChange] })).toEqual({
+      email: null,
+      status: null,
+    });
   });
 
   it("treats a missing status like a not-submitted one", () => {
-    expect(decideNotification({ status: undefined, action: "save", changes: [] })).toEqual({ email: null, status: null });
+    expect(decideNotification({ status: undefined, action: "save", changes: [] })).toEqual({
+      email: null,
+      status: null,
+    });
   });
 
   it("treats any status other than submitted as not submitted", () => {
-    expect(decideNotification({ status: "draft", action: "save", changes: [oneChange] })).toEqual({ email: null, status: null });
+    expect(decideNotification({ status: "draft", action: "save", changes: [oneChange] })).toEqual({
+      email: null,
+      status: null,
+    });
   });
 
   it("always emails on the first submit, even with zero changes", () => {

@@ -4,21 +4,28 @@ import { cleanRequests, diffRequests, summarizeRequests } from "./requests";
 
 describe("cleanRequests", () => {
   it("trims label and details", () => {
-    expect(cleanRequests([{ label: " AV ", details: " Two mics " }])).toEqual([
-      { label: "AV", details: "Two mics" },
-    ]);
+    expect(cleanRequests([{ label: " AV ", details: " Two mics " }])).toEqual([{ label: "AV", details: "Two mics" }]);
   });
 
   it("drops rows where both label and details are empty", () => {
-    const requests = [{ label: " ", details: "" }, { label: "", details: "Signage" }];
+    const requests = [
+      { label: " ", details: "" },
+      { label: "", details: "Signage" },
+    ];
     expect(cleanRequests(requests)).toEqual([{ label: "", details: "Signage" }]);
   });
 });
 
 describe("diffRequests", () => {
   it("reports no change when requests are only reordered", () => {
-    const before = [{ label: "AV", details: "Two mics" }, { label: "Signage", details: "Door sign" }];
-    const after = [{ label: "Signage", details: "Door sign" }, { label: "AV", details: "Two mics" }];
+    const before = [
+      { label: "AV", details: "Two mics" },
+      { label: "Signage", details: "Door sign" },
+    ];
+    const after = [
+      { label: "Signage", details: "Door sign" },
+      { label: "AV", details: "Two mics" },
+    ];
     expect(diffRequests(before, after)).toEqual([]);
   });
 
@@ -58,11 +65,10 @@ describe("summarizeRequests", () => {
   });
 
   it("lists requests in the client's order", () => {
-    const requests = [{ label: "AV", details: "Two wireless microphones" }, { label: "", details: "Flowers" }];
-    expect(summarizeRequests(requests)).toEqual([
-      "Other requests:",
-      "- AV: Two wireless microphones",
-      "- Flowers",
-    ]);
+    const requests = [
+      { label: "AV", details: "Two wireless microphones" },
+      { label: "", details: "Flowers" },
+    ];
+    expect(summarizeRequests(requests)).toEqual(["Other requests:", "- AV: Two wireless microphones", "- Flowers"]);
   });
 });

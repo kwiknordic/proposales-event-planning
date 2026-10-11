@@ -29,8 +29,8 @@ export default function DemoPage() {
             <div className="card grid gap-3 content-start">
               <h3>Not yet accepted</h3>
               <p>
-                Nordic Tech Summit, 1 day, 120 people. Planning opens only after acceptance; see what the client
-                sees before that.
+                Nordic Tech Summit, 1 day, 120 people. Planning opens only after acceptance; see what the client sees
+                before that.
               </p>
               <Link className="btn-secondary justify-self-start mt-2" href={`/plan/${pending}`}>
                 See the locked page

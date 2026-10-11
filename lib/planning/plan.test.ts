@@ -5,25 +5,45 @@ import { emptyPlan, type Plan } from "./schema";
 
 const plan: Plan = {
   ...emptyPlan,
-  agenda: [{ time: "09:00", title: "Welcome" }, { time: "12:00", title: "Lunch" }],
+  agenda: [
+    { time: "09:00", title: "Welcome" },
+    { time: "12:00", title: "Lunch" },
+  ],
   seating: { layout: "classroom", notes: "" },
 };
 
 describe("cleanPlan", () => {
   it("drops empty agenda rows and trims seating", () => {
-    const messy = { ...plan, agenda: [...plan.agenda, { time: " ", title: "" }], seating: { layout: " classroom ", notes: "" } };
+    const messy = {
+      ...plan,
+      agenda: [...plan.agenda, { time: " ", title: "" }],
+      seating: { layout: " classroom ", notes: "" },
+    };
     expect(cleanPlan(messy)).toEqual(plan);
   });
 });
 
 describe("diffPlan", () => {
   it("is empty for the same plan retyped and reordered", () => {
-    const retyped = { ...plan, agenda: [{ time: "12:00", title: " lunch" }, { time: "09:00", title: "WELCOME" }] };
+    const retyped = {
+      ...plan,
+      agenda: [
+        { time: "12:00", title: " lunch" },
+        { time: "09:00", title: "WELCOME" },
+      ],
+    };
     expect(diffPlan(plan, retyped)).toEqual([]);
   });
 
   it("lists agenda changes before seating changes", () => {
-    const edited = { ...plan, agenda: [{ time: "09:00", title: "Welcome" }, { time: "12:30", title: "Lunch" }], seating: { layout: "banquet", notes: "" } };
+    const edited = {
+      ...plan,
+      agenda: [
+        { time: "09:00", title: "Welcome" },
+        { time: "12:30", title: "Lunch" },
+      ],
+      seating: { layout: "banquet", notes: "" },
+    };
     expect(diffPlan(plan, edited).map((change) => change.line)).toEqual([
       "Agenda: Lunch 12:00 -> 12:30",
       "Seating layout: classroom -> banquet",
@@ -68,8 +88,22 @@ describe("diffPlan on all sections", () => {
   });
 
   it("finds no change when attendees and extras are only reordered", () => {
-    const before = { ...fullPlan, extras: ["A", "B"], attendees: [{ name: "Anna", diet: "" }, { name: "Ben", diet: "Halal" }] };
-    const after = { ...before, extras: ["b", "A"], attendees: [{ name: "Ben", diet: "halal" }, { name: "Anna", diet: "" }] };
+    const before = {
+      ...fullPlan,
+      extras: ["A", "B"],
+      attendees: [
+        { name: "Anna", diet: "" },
+        { name: "Ben", diet: "Halal" },
+      ],
+    };
+    const after = {
+      ...before,
+      extras: ["b", "A"],
+      attendees: [
+        { name: "Ben", diet: "halal" },
+        { name: "Anna", diet: "" },
+      ],
+    };
     expect(diffPlan(before, after)).toEqual([]);
   });
 });

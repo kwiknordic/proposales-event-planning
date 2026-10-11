@@ -13,9 +13,7 @@ describe("cleanSeating", () => {
 
 describe("diffSeating", () => {
   it("reports a layout change as a readable line", () => {
-    expect(
-      diffSeating({ layout: "theatre", notes: "" }, { layout: "classroom", notes: "" }),
-    ).toEqual([
+    expect(diffSeating({ layout: "theatre", notes: "" }, { layout: "classroom", notes: "" })).toEqual([
       { section: "seating", kind: "changed", line: "Seating layout: theatre -> classroom" },
     ]);
   });
@@ -23,9 +21,7 @@ describe("diffSeating", () => {
   it("reports a notes change as a readable line", () => {
     expect(
       diffSeating({ layout: "banquet", notes: "" }, { layout: "banquet", notes: "Two tables near the door" }),
-    ).toEqual([
-      { section: "seating", kind: "changed", line: "Seating notes: (empty) -> Two tables near the door" },
-    ]);
+    ).toEqual([{ section: "seating", kind: "changed", line: "Seating notes: (empty) -> Two tables near the door" }]);
   });
 
   it("ignores case and whitespace only", () => {

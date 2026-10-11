@@ -87,9 +87,12 @@ describe("sendEmail with Resend configured", () => {
   });
 
   it("logs an error and resolves when the network request fails", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => {
-      throw new TypeError("fetch failed");
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new TypeError("fetch failed");
+      }),
+    );
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     await expect(sendEmail(message)).resolves.toBeUndefined();

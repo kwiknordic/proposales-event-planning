@@ -15,10 +15,10 @@ export function AiUse() {
           <div className="card">
             <h3>What it does</h3>
             <p className="mt-3">
-              When the client changes their plan, the{" "}
-              <a href="https://docs.typesafe.ai">Jev model</a> answers one yes/no question per
-              change: does it need the hotel&apos;s prompt attention? Urgent changes, like a new nut allergy, go in a
-              &quot;Needs attention&quot; box at the top of the email, and the subject starts with [Action needed].
+              When the client changes their plan, the <a href="https://docs.typesafe.ai">Jev model</a> answers one
+              yes/no question per change: does it need the hotel&apos;s prompt attention? Urgent changes, like a new nut
+              allergy, go in a &quot;Needs attention&quot; box at the top of the email, and the subject starts with
+              [Action needed].
             </p>
           </div>
           <div className="card">
@@ -39,8 +39,8 @@ export function AiUse() {
         </div>
 
         <p className="text-muted mt-6 max-w-3xl">
-          Not built: my second idea was to turn unstructured input, like a forwarded email, a PDF or a spreadsheet,
-          into a structured plan. That needs a general-purpose LLM, and I had no LLM credits for this prototype.
+          Not built: my second idea was to turn unstructured input, like a forwarded email, a PDF or a spreadsheet, into
+          a structured plan. That needs a general-purpose LLM, and I had no LLM credits for this prototype.
         </p>
       </div>
     </section>

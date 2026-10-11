@@ -26,9 +26,7 @@ describe("attendeesCsv", () => {
   });
 
   it("quotes values with a line feed or carriage return", () => {
-    expect(attendeesCsv([{ name: "Line\nBreak", diet: "a\rb" }])).toBe(
-      'name,diet\r\n"Line\nBreak","a\rb"\r\n',
-    );
+    expect(attendeesCsv([{ name: "Line\nBreak", diet: "a\rb" }])).toBe('name,diet\r\n"Line\nBreak","a\rb"\r\n');
   });
 
   it("guards each formula character with a leading apostrophe", () => {
@@ -44,13 +42,14 @@ describe("attendeesCsv", () => {
   });
 
   it("applies the guard before quoting", () => {
-    expect(attendeesCsv([{ name: '=HYPERLINK("x")', diet: "" }])).toBe(
-      'name,diet\r\n"\'=HYPERLINK(""x"")",\r\n',
-    );
+    expect(attendeesCsv([{ name: '=HYPERLINK("x")', diet: "" }])).toBe('name,diet\r\n"\'=HYPERLINK(""x"")",\r\n');
   });
 
   it("uses CRLF for every line and ends with a final CRLF", () => {
-    const csv = attendeesCsv([{ name: "A", diet: "B" }, { name: "C", diet: "D" }]);
+    const csv = attendeesCsv([
+      { name: "A", diet: "B" },
+      { name: "C", diet: "D" },
+    ]);
     expect(csv.endsWith("\r\n")).toBe(true);
     expect(csv.replace(/\r\n/g, "")).not.toMatch(/[\r\n]/);
   });

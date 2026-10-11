@@ -13,9 +13,8 @@ export function Hero() {
           <span className="heading-muted">to a ready event plan.</span>
         </h1>
         <p className="lead max-w-2xl mx-auto mt-6">
-          After a client accepts a proposal, hotels still chase them for the agenda, seating, extras
-          and the guest list. This tool lets the client hand it all over in one place, right on the
-          proposal.
+          After a client accepts a proposal, hotels still chase them for the agenda, seating, extras and the guest list.
+          This tool lets the client hand it all over in one place, right on the proposal.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3 mt-8">
           <Link className="btn" href="/demo">

@@ -22,7 +22,11 @@ const extraChange: Change = { section: "extras", kind: "added", line: "Extra add
 export const sampleEmail = buildEmail({
   kind: "updated",
   // A placeholder uuid: the "Open in Proposales" link is only for show here
-  proposal: { uuid: "00000000-0000-4000-8000-000000000000", title: "Acme Sales Kickoff – 2 days, 40 people", status: "accepted" },
+  proposal: {
+    uuid: "00000000-0000-4000-8000-000000000000",
+    title: "Acme Sales Kickoff – 2 days, 40 people",
+    status: "accepted",
+  },
   plan,
   changes: [allergyChange, extraChange],
   // Fixed rather than asking Jev: a nut allergy scored 0.97 when the threshold was tuned

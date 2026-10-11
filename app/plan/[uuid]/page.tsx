@@ -41,7 +41,9 @@ async function ProposalGate({ params }: { params: Promise<{ uuid: string }> }) {
     return (
       <div className="card">
         <p className="text-muted">{proposal.title}</p>
-        <h1 className="mt-2">Event planning opens <em className="underline">after</em> you accept the proposal</h1>
+        <h1 className="mt-2">
+          Event planning opens <em className="underline">after</em> you accept the proposal
+        </h1>
       </div>
     );
   }

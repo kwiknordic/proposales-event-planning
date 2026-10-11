@@ -69,12 +69,12 @@ cp .env.example .env    # then fill in the values below
 npm run dev             # http://localhost:3000
 ```
 
-| Variable | Needed for | Without it |
-|---|---|---|
-| `PROPOSALES_API_KEY` | Reading and saving proposals | Nothing works |
-| `NEXT_PUBLIC_DEMO_ACCEPTED_UUID`, `NEXT_PUBLIC_DEMO_PENDING_UUID` | The `/demo` page and the demo banner | `/demo` says no demo is configured |
-| `RESEND_API_KEY`, `HOTEL_NOTIFY_EMAIL` | Sending the hotel email | The email is printed to the server log |
-| `JEV_API_KEY` | Flagging urgent changes | Emails go out without flags |
+| Variable                                                          | Needed for                           | Without it                             |
+| ----------------------------------------------------------------- | ------------------------------------ | -------------------------------------- |
+| `PROPOSALES_API_KEY`                                              | Reading and saving proposals         | Nothing works                          |
+| `NEXT_PUBLIC_DEMO_ACCEPTED_UUID`, `NEXT_PUBLIC_DEMO_PENDING_UUID` | The `/demo` page and the demo banner | `/demo` says no demo is configured     |
+| `RESEND_API_KEY`, `HOTEL_NOTIFY_EMAIL`                            | Sending the hotel email              | The email is printed to the server log |
+| `JEV_API_KEY`                                                     | Flagging urgent changes              | Emails go out without flags            |
 
 Checks: `npm test`, `npx tsc --noEmit`, `npm run build`.
 
@@ -94,11 +94,11 @@ Stack: Next.js 16, TypeScript, Tailwind CSS v4, zod and Vitest. Resend and Jev a
 
 ## Where things are
 
-| Path | What it is |
-|---|---|
-| `app/` | Routes: landing page, `/demo`, `/plan/[uuid]`, `POST /api/plan`, `POST /api/demo/reset` |
-| `components/` | UI: landing sections and the planning form, one component per plan section |
-| `lib/planning/` | Plan logic without I/O: schema, normalization, per-section changes and summary, notify rule |
-| `lib/email/` | Building, rendering and sending the hotel email, and the attendees CSV |
-| `lib/proposales/` | The Proposales API client |
-| `lib/jev/` | The urgency flag |
+| Path              | What it is                                                                                  |
+| ----------------- | ------------------------------------------------------------------------------------------- |
+| `app/`            | Routes: landing page, `/demo`, `/plan/[uuid]`, `POST /api/plan`, `POST /api/demo/reset`     |
+| `components/`     | UI: landing sections and the planning form, one component per plan section                  |
+| `lib/planning/`   | Plan logic without I/O: schema, normalization, per-section changes and summary, notify rule |
+| `lib/email/`      | Building, rendering and sending the hotel email, and the attendees CSV                      |
+| `lib/proposales/` | The Proposales API client                                                                   |
+| `lib/jev/`        | The urgency flag                                                                            |

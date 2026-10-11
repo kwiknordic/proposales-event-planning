@@ -9,7 +9,11 @@ const MAX_ROWS = 100;
 const MAX_ATTENDEES = 1000;
 
 // The Proposales API stores null as a literal value (it cannot delete keys); read it as "".
-const text = z.string().max(MAX_TEXT).nullish().transform((value) => value ?? "");
+const text = z
+  .string()
+  .max(MAX_TEXT)
+  .nullish()
+  .transform((value) => value ?? "");
 
 const agendaItem = z.object({ time: text, title: text });
 // Layout stays a free string (not an enum) so an unexpected stored value never makes

@@ -33,11 +33,7 @@
     "layout": "classroom",
     "notes": "Stage at the front, two standing tables at the back for the coffee break."
   },
-  "extras": [
-    "Projector and screen",
-    "Coffee breaks morning and afternoon",
-    "Name badges"
-  ],
+  "extras": ["Projector and screen", "Coffee breaks morning and afternoon", "Name badges"],
   "requests": [
     {
       "label": "AV",

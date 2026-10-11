@@ -74,8 +74,8 @@
   --input-padding: 12px;
 
   /* Layout */
-  --content-width: 712px;  /* proposales.com main column (same width as its nav island) */
-  --wide-width: 1128px;    /* proposales.com main-container */
+  --content-width: 712px; /* proposales.com main column (same width as its nav island) */
+  --wide-width: 1128px; /* proposales.com main-container */
 }
 
 /* Base elements */
@@ -96,15 +96,27 @@ h3 {
   letter-spacing: var(--tracking-heading);
   line-height: var(--leading-heading);
 }
-h1 { font-size: var(--text-h1); }
-h2 { font-size: var(--text-h2); }
-h3 { font-size: var(--text-h3); }
+h1 {
+  font-size: var(--text-h1);
+}
+h2 {
+  font-size: var(--text-h2);
+}
+h3 {
+  font-size: var(--text-h3);
+}
 
 /* Headings step down one size on small screens (proposales scale 1.12 on mobile) */
 @media (max-width: 767px) {
-  h1 { font-size: var(--text-h2); }
-  h2 { font-size: var(--text-h3); }
-  h3 { font-size: var(--text-lead); }
+  h1 {
+    font-size: var(--text-h2);
+  }
+  h2 {
+    font-size: var(--text-h3);
+  }
+  h3 {
+    font-size: var(--text-lead);
+  }
 }
 
 a {
@@ -124,11 +136,19 @@ button:focus-visible {
   margin-inline: auto;
   padding-inline: var(--space-6);
 }
-.container { max-width: var(--content-width); }
-.container-wide { max-width: var(--wide-width); }
+.container {
+  max-width: var(--content-width);
+}
+.container-wide {
+  max-width: var(--wide-width);
+}
 
-.section { padding-block: var(--space-8); }
-.section-landing { padding-block: var(--space-10); }
+.section {
+  padding-block: var(--space-8);
+}
+.section-landing {
+  padding-block: var(--space-10);
+}
 
 /* Site header: a white "island" bar like the proposales.com navigation */
 .site-header {
@@ -158,7 +178,9 @@ button:focus-visible {
   gap: var(--space-6);
 }
 @media (min-width: 768px) {
-  .grid-cards { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .grid-cards {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
 }
 
 /* Surfaces */
@@ -176,14 +198,20 @@ button:focus-visible {
   border-radius: var(--radius-medium);
   padding: var(--space-9) var(--space-6);
 }
-.card-dark h2 { color: var(--color-on-primary); }
+.card-dark h2 {
+  color: var(--color-on-primary);
+}
 .card-dark .lead,
-.card-dark .text-muted { color: color-mix(in srgb, var(--color-white) 70%, transparent); }
+.card-dark .text-muted {
+  color: color-mix(in srgb, var(--color-white) 70%, transparent);
+}
 .card-dark .btn {
   background: var(--color-surface);
   color: var(--color-heading);
 }
-.card-dark .btn:hover { background: var(--color-surface-muted); }
+.card-dark .btn:hover {
+  background: var(--color-surface-muted);
+}
 
 .banner {
   display: flex;
@@ -204,7 +232,9 @@ button:focus-visible {
   padding: var(--space-4);
 }
 
-.alert-success { color: var(--color-success); }
+.alert-success {
+  color: var(--color-success);
+}
 
 .badge {
   display: inline-block;
@@ -228,21 +258,27 @@ button:focus-visible {
   font-weight: 400;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.2s, border-color 0.2s;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
 }
 .btn {
   background: var(--color-primary);
   color: var(--color-on-primary);
   border: none;
 }
-.btn:hover { background: var(--color-primary-hover); }
+.btn:hover {
+  background: var(--color-primary-hover);
+}
 /* Light gray pill without a border, like "Try for free" on proposales.com */
 .btn-secondary {
   background: var(--color-surface-muted);
   color: var(--color-heading);
   border: none;
 }
-.btn-secondary:hover { background: var(--color-neutral-200); }
+.btn-secondary:hover {
+  background: var(--color-neutral-200);
+}
 .btn:disabled,
 .btn-secondary:disabled {
   opacity: 0.4;
@@ -262,7 +298,9 @@ button:focus-visible {
   text-decoration: none;
   cursor: pointer;
 }
-.btn-link:hover { text-decoration: underline; }
+.btn-link:hover {
+  text-decoration: underline;
+}
 
 /* Form controls */
 .field {
@@ -328,7 +366,9 @@ button:focus-visible {
   font-size: var(--text-small);
 }
 /* The faded second line of a heading, as in proposales.com section titles */
-.heading-muted { color: color-mix(in srgb, var(--color-heading) 50%, transparent); }
+.heading-muted {
+  color: color-mix(in srgb, var(--color-heading) 50%, transparent);
+}
 
 .text-display {
   font-size: var(--text-display);
@@ -336,7 +376,9 @@ button:focus-visible {
   letter-spacing: var(--tracking-heading);
 }
 @media (max-width: 767px) {
-  .text-display { font-size: var(--text-h1); }
+  .text-display {
+    font-size: var(--text-h1);
+  }
 }
 .lead {
   font-size: var(--text-lead);

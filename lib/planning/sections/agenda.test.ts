@@ -8,15 +8,24 @@ describe("cleanAgenda", () => {
   });
 
   it("drops rows where both time and title are empty", () => {
-    const items = [{ time: " ", title: "" }, { time: "", title: "Lunch" }];
+    const items = [
+      { time: " ", title: "" },
+      { time: "", title: "Lunch" },
+    ];
     expect(cleanAgenda(items)).toEqual([{ time: "", title: "Lunch" }]);
   });
 });
 
 describe("diffAgenda", () => {
   it("reports no change when items are only reordered", () => {
-    const before = [{ time: "09:00", title: "Welcome" }, { time: "12:00", title: "Lunch" }];
-    const after = [{ time: "12:00", title: "Lunch" }, { time: "09:00", title: "Welcome" }];
+    const before = [
+      { time: "09:00", title: "Welcome" },
+      { time: "12:00", title: "Lunch" },
+    ];
+    const after = [
+      { time: "12:00", title: "Lunch" },
+      { time: "09:00", title: "Welcome" },
+    ];
     expect(diffAgenda(before, after)).toEqual([]);
   });
 
@@ -56,7 +65,10 @@ describe("summarizeAgenda", () => {
   });
 
   it("lists items in the client's order", () => {
-    const items = [{ time: "09:00", title: "Welcome" }, { time: "", title: "Lunch" }];
+    const items = [
+      { time: "09:00", title: "Welcome" },
+      { time: "", title: "Lunch" },
+    ];
     expect(summarizeAgenda(items)).toEqual(["Agenda:", "- 09:00 Welcome", "- Lunch"]);
   });
 });

@@ -55,9 +55,12 @@ describe("getProposal", () => {
   });
 
   it("throws when fetch itself fails (network error)", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => {
-      throw new TypeError("fetch failed");
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new TypeError("fetch failed");
+      }),
+    );
     await expect(getProposal(UUID)).rejects.toThrow("fetch failed");
   });
 });
@@ -97,7 +100,9 @@ describe("resetPlanningData", () => {
 
     await resetPlanningData(UUID);
 
-    const bodies = fetchMock.mock.calls.map((call) => JSON.parse((call as unknown as [string, RequestInit])[1].body as string));
+    const bodies = fetchMock.mock.calls.map((call) =>
+      JSON.parse((call as unknown as [string, RequestInit])[1].body as string),
+    );
     expect(bodies).toEqual([
       { data: { planning: null } },
       {

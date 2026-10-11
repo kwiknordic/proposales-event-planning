@@ -10,14 +10,14 @@ export function Problem() {
           <div>
             <h2>It started with a review</h2>
             <p className="lead mt-4">
-              A convention sales manager at a small city-center hotel in Germany gave Proposales full
-              marks, and asked for one more thing:
+              A convention sales manager at a small city-center hotel in Germany gave Proposales full marks, and asked
+              for one more thing:
             </p>
             <blockquote className="quote mt-6">
-              &quot;What I would like Proposales to offer is a standalone tool for the client. An
-              interface where they can enter the agenda, times, seating arrangement, and extras, along
-              with a complete list of names and everything else needed for clear, seamless planning.
-              Without us having to remind them or follow up on every step.&quot;
+              &quot;What I would like Proposales to offer is a standalone tool for the client. An interface where they
+              can enter the agenda, times, seating arrangement, and extras, along with a complete list of names and
+              everything else needed for clear, seamless planning. Without us having to remind them or follow up on
+              every step.&quot;
             </blockquote>
           </div>
           <figure className="card max-w-md">

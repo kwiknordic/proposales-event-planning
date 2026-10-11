@@ -30,7 +30,8 @@ export function Wishlist() {
       <div className="container-wide">
         <h2>What I would add with more access</h2>
         <p className="lead mt-4 max-w-3xl">
-          Some of the best parts of this are not possible today, through the Proposales API or without LLM credits. These are my suggestions:
+          Some of the best parts of this are not possible today, through the Proposales API or without LLM credits.
+          These are my suggestions:
         </p>
         <ul className="mt-8 grid gap-5 max-w-3xl">
           {wishes.map((wish) => (

@@ -123,7 +123,8 @@ export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialN
 
       {saveState.kind === "stale" && (
         <p className="alert-error" role="alert">
-          Your plan was changed somewhere else (another tab or a colleague). We reloaded it; please re-apply your change.
+          Your plan was changed somewhere else (another tab or a colleague). We reloaded it; please re-apply your
+          change.
         </p>
       )}
       {saveState.kind === "error" && (

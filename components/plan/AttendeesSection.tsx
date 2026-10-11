@@ -41,7 +41,9 @@ export function AttendeesSection({ attendees, onChange }: Props) {
   return (
     <section className="card grid gap-4">
       <h2>Attendees</h2>
-      <p className="text-muted">{count} {count === 1 ? "attendee" : "attendees"}</p>
+      <p className="text-muted">
+        {count} {count === 1 ? "attendee" : "attendees"}
+      </p>
 
       {attendees.map((attendee, index) => {
         const row = index + 1;
@@ -84,9 +86,7 @@ export function AttendeesSection({ attendees, onChange }: Props) {
           value={pasteText}
           onChange={(event) => setPasteText(event.target.value)}
         />
-        <p className="text-muted">
-          One person per line: Name, or Name, diet. Pasting from a spreadsheet works too.
-        </p>
+        <p className="text-muted">One person per line: Name, or Name, diet. Pasting from a spreadsheet works too.</p>
       </div>
       <button
         type="button"

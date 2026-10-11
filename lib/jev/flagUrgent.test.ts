@@ -89,9 +89,12 @@ describe("flagUrgent", () => {
   });
 
   it("returns [] when the request is aborted by the timeout", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => {
-      throw new DOMException("The operation timed out.", "TimeoutError");
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new DOMException("The operation timed out.", "TimeoutError");
+      }),
+    );
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
 
     expect(await flagUrgent("Acme Sales Kickoff", changes)).toEqual([]);
@@ -100,16 +103,22 @@ describe("flagUrgent", () => {
   });
 
   it("returns [] when fetch rejects with an AbortError", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => {
-      throw new DOMException("The operation was aborted.", "AbortError");
-    }));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => {
+        throw new DOMException("The operation was aborted.", "AbortError");
+      }),
+    );
     vi.spyOn(console, "error").mockImplementation(() => {});
 
     expect(await flagUrgent("Acme Sales Kickoff", changes)).toEqual([]);
   });
 
   it("returns [] when the response body is not valid JSON", async () => {
-    vi.stubGlobal("fetch", vi.fn(async () => new Response("<html>oops</html>", { status: 200 })));
+    vi.stubGlobal(
+      "fetch",
+      vi.fn(async () => new Response("<html>oops</html>", { status: 200 })),
+    );
     vi.spyOn(console, "error").mockImplementation(() => {});
 
     expect(await flagUrgent("Acme Sales Kickoff", changes)).toEqual([]);

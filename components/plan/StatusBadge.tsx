@@ -24,7 +24,8 @@ export function StatusBadge({ status, notifiedAt }: Props) {
 function LocalTime({ iso }: { iso: string }) {
   const formatted = useSyncExternalStore(
     subscribeToNothing,
-    () => new Date(iso).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }),
+    () =>
+      new Date(iso).toLocaleString(undefined, { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" }),
     () => "",
   );
   return <time dateTime={iso}>{formatted && `· ${formatted}`}</time>;
