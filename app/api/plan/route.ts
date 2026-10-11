@@ -9,11 +9,11 @@ import { renderText } from "@/lib/email/renderText";
 import { sendEmail } from "@/lib/email/sendEmail";
 import { flagUrgent } from "@/lib/jev/flagUrgent";
 import type { Change } from "@/lib/planning/changes";
-import { decideNotification } from "@/lib/planning/notifyRule";
+import { decideNotification, type EmailKind } from "@/lib/planning/notifyRule";
 import { cleanPlan, diffPlan, isStale, readStoredPlan, summarizePlan } from "@/lib/planning/plan";
 import { planSchema, type Plan } from "@/lib/planning/schema";
 import { getProposal, savePlanningData, type PlanningData } from "@/lib/proposales/client";
-import type { Proposal } from "@/lib/proposales/parseProposal";
+import { readNotifiedAt, readPlanningStatus, type Proposal } from "@/lib/proposales/parseProposal";
 
 const planRequestSchema = z.object({
   uuid: z.string(),
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
 
   const next = cleanPlan(plan);
   const changes = diffPlan(stored, next);
-  const decision = decideNotification({ status: readStatus(proposal), action, changes });
+  const decision = decideNotification({ status: readPlanningStatus(proposal), action, changes });
   const now = new Date().toISOString();
 
   // Only the keys that change are sent; the API leaves the others (e.g. planning_submitted_at) alone
@@ -76,7 +76,7 @@ export async function POST(request: Request) {
 // The plan is already saved at this point, so an email problem is logged, never returned as an error.
 // Returns the email's HTML, or null when building it failed.
 async function emailHotel(
-  kind: "submitted" | "updated",
+  kind: EmailKind,
   proposal: Proposal,
   plan: Plan,
   changes: Change[],
@@ -97,12 +97,4 @@ async function emailHotel(
     console.error("Emailing the hotel failed", error);
     return null;
   }
-}
-
-function readStatus(proposal: Proposal): string | null {
-  return typeof proposal.data.planning_status === "string" ? proposal.data.planning_status : null;
-}
-
-function readNotifiedAt(proposal: Proposal): string | null {
-  return typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null;
 }

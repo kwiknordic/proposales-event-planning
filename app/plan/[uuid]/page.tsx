@@ -6,6 +6,7 @@ import { PlanningForm } from "@/components/plan/PlanningForm";
 import { isDemoProposal } from "@/lib/demo";
 import { readStoredPlan } from "@/lib/planning/plan";
 import { getProposal } from "@/lib/proposales/client";
+import { readNotifiedAt, readPlanningStatus } from "@/lib/proposales/parseProposal";
 
 export default function PlanPage({ params }: { params: Promise<{ uuid: string }> }) {
   return (
@@ -50,8 +51,8 @@ async function ProposalGate({ params }: { params: Promise<{ uuid: string }> }) {
       uuid={proposal.uuid}
       title={proposal.title}
       initialPlan={readStoredPlan(proposal.data.planning)}
-      initialStatus={proposal.data.planning_status === "submitted" ? "submitted" : null}
-      initialNotifiedAt={typeof proposal.data.planning_notified_at === "string" ? proposal.data.planning_notified_at : null}
+      initialStatus={readPlanningStatus(proposal)}
+      initialNotifiedAt={readNotifiedAt(proposal)}
       isDemo={isDemoProposal(proposal.uuid)}
     />
   );

@@ -1,5 +1,6 @@
 // Turns the raw Proposales API response into a flat Proposal.
 // Used by lib/proposales/client.ts so the rest of the app never sees the nested `data.data` shape.
+import type { PlanningStatus } from "@/lib/planning/notifyRule";
 
 export type Proposal = {
   uuid: string;
@@ -35,4 +36,14 @@ export function parseProposal(raw: unknown): Proposal {
     status: proposal.status,
     data: customData,
   };
+}
+
+// The hotel can edit custom data freely, so only the exact value "submitted" counts as submitted.
+export function readPlanningStatus(proposal: Proposal): PlanningStatus {
+  return proposal.data.planning_status === "submitted" ? "submitted" : null;
+}
+
+export function readNotifiedAt(proposal: Proposal): string | null {
+  const notifiedAt = proposal.data.planning_notified_at;
+  return typeof notifiedAt === "string" ? notifiedAt : null;
 }

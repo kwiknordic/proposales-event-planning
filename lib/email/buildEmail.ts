@@ -3,11 +3,12 @@
 import type { Change } from "@/lib/planning/changes";
 import { summarizeDiets, type DietCount } from "@/lib/planning/dietSummary";
 import { cleanPlan } from "@/lib/planning/plan";
+import type { EmailKind } from "@/lib/planning/notifyRule";
 import type { Plan } from "@/lib/planning/schema";
 
 export type HotelEmail = {
   subject: string;
-  kind: "submitted" | "updated";
+  kind: EmailKind;
   proposal: { title: string; status: string; editorUrl: string };
   urgentChanges: string[];
   changes: string[];
@@ -19,7 +20,7 @@ export type HotelEmail = {
 // The subject prefix is what the hotel sees first in the inbox, so urgent changes must show there.
 // A first submit has no earlier plan to compare with, so it lists no changes.
 export function buildEmail(input: {
-  kind: "submitted" | "updated";
+  kind: EmailKind;
   proposal: { uuid: string; title: string; status: string };
   plan: Plan;
   changes: Change[];

@@ -3,6 +3,7 @@
 // and saves through POST /api/plan. The baseline is the plan as last read from or saved to the server.
 import { useRef, useState } from "react";
 import { samplePlan } from "@/lib/demo";
+import type { PlanAction, PlanningStatus } from "@/lib/planning/notifyRule";
 import { emptyPlan, type Plan } from "@/lib/planning/schema";
 import { AgendaSection } from "./AgendaSection";
 import { AttendeesSection } from "./AttendeesSection";
@@ -16,7 +17,7 @@ type Props = {
   uuid: string;
   title: string;
   initialPlan: Plan;
-  initialStatus: "submitted" | null;
+  initialStatus: PlanningStatus;
   initialNotifiedAt: string | null;
   isDemo: boolean;
 };
@@ -35,25 +36,24 @@ export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialN
   const [notifiedAt, setNotifiedAt] = useState(initialNotifiedAt);
   // Demo only: a browser-local link to the email the hotel just got, so reviewers can see behind the curtain
   const [emailPreviewUrl, setEmailPreviewUrl] = useState<string | null>(null);
+  // A ref, not state: it is only read when saving, never rendered
+  const baseline = useRef<Plan>(initialPlan);
+  const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
+
+  // One request at a time: a save during a reset (or the other way round) would race
+  const isBusy = saveState.kind === "saving" || saveState.kind === "resetting";
 
   function showEmailPreview(html: string | undefined) {
     if (emailPreviewUrl) URL.revokeObjectURL(emailPreviewUrl);
     setEmailPreviewUrl(html ? URL.createObjectURL(new Blob([html], { type: "text/html" })) : null);
   }
-  // A ref, not state: it is only read when saving, never rendered
-  const baseline = useRef<Plan>(initialPlan);
-  const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
 
-  async function savePlan(action: "save" | "submit") {
+  async function savePlan(action: PlanAction) {
     setSaveState({ kind: "saving" });
     // Hide the old link right away, so it is never unclear which email it opens
     showEmailPreview(undefined);
     try {
-      const response = await fetch("/api/plan", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uuid, action, baseline: baseline.current, plan }),
-      });
+      const response = await postJson("/api/plan", { uuid, action, baseline: baseline.current, plan });
       const result = await response.json();
 
       if (response.status === 409) {
@@ -76,23 +76,16 @@ export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialN
       setNotifiedAt(result.notifiedAt);
       showEmailPreview(result.emailPreview);
     } catch {
-      setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
+      setSaveState({ kind: "error", message: NETWORK_ERROR_MESSAGE });
     }
   }
-
-  // One request at a time: a save during a reset (or the other way round) would race
-  const isBusy = saveState.kind === "saving" || saveState.kind === "resetting";
 
   // Demo only: the stored plan and status go back to empty, so the first submit can be tried again
   async function resetDemo() {
     setSaveState({ kind: "resetting" });
     showEmailPreview(undefined);
     try {
-      const response = await fetch("/api/demo/reset", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ uuid }),
-      });
+      const response = await postJson("/api/demo/reset", { uuid });
       if (!response.ok) {
         setSaveState({ kind: "error", message: "Resetting the demo failed. Please try again." });
         return;
@@ -103,7 +96,7 @@ export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialN
       setNotifiedAt(null);
       setSaveState({ kind: "saved", message: "Demo reset" });
     } catch {
-      setSaveState({ kind: "error", message: "We could not reach the server. Check your connection and try again." });
+      setSaveState({ kind: "error", message: NETWORK_ERROR_MESSAGE });
     }
   }
 
@@ -171,8 +164,18 @@ export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialN
   );
 }
 
+const NETWORK_ERROR_MESSAGE = "We could not reach the server. Check your connection and try again.";
+
+function postJson(url: string, body: unknown): Promise<Response> {
+  return fetch(url, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+}
+
 // Tells the client whether the hotel heard about this save, so "Saved" never hides a missing email
-function savedMessage(action: "save" | "submit", statusBefore: "submitted" | null, hotelNotified: boolean): string {
+function savedMessage(action: PlanAction, statusBefore: PlanningStatus, hotelNotified: boolean): string {
   if (statusBefore !== "submitted") return action === "submit" ? "Sent to the hotel" : "Saved";
   return hotelNotified ? "Saved, the hotel was notified" : "Saved, nothing changed for the hotel";
 }

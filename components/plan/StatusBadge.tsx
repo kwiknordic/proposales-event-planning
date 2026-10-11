@@ -2,9 +2,10 @@
 // Shows where the plan stands with the hotel: not sent yet, sent, or notified of changes (with when).
 // Used by PlanningForm.
 import { useSyncExternalStore } from "react";
+import type { PlanningStatus } from "@/lib/planning/notifyRule";
 
 type Props = {
-  status: "submitted" | null;
+  status: PlanningStatus;
   notifiedAt: string | null;
 };
 
