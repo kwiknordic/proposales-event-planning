@@ -9,7 +9,6 @@ export type Change = {
   line: string;
 };
 
-// Display always uses the client's original text, only trimmed.
 export function formatValue(text: string | null | undefined): string {
   const trimmed = (text ?? "").trim();
   return trimmed === "" ? "(empty)" : trimmed;

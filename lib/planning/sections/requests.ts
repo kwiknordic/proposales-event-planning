@@ -50,7 +50,6 @@ export function summarizeRequests(requests: OtherRequest[]): string[] {
   return ["Other requests:", ...clean.map((request) => `- ${requestLabel(request)}`)];
 }
 
-// "AV: Two wireless microphones", or just "AV" when no details were given.
 function requestLabel(request: OtherRequest): string {
   return [request.label, request.details].filter((part) => part !== "").join(": ");
 }

@@ -38,7 +38,6 @@ function bulletList(items: string[]): string[] {
   return items.map((item) => `- ${item}`);
 }
 
-// "09:00 Welcome", or just "Welcome" when no time was given.
 function agendaLine(item: AgendaItem): string {
   return [item.time, item.title].filter((part) => part !== "").join(" ");
 }
@@ -58,7 +57,6 @@ function dietLine(dietSummary: DietCount[]): string {
   return dietSummary.map((entry) => `${entry.diet}: ${entry.count}`).join(", ");
 }
 
-// "Anna Lindqvist: Vegetarian"; an empty diet is shown as the name alone.
 function attendeeLines(attendees: Attendee[], hasAttendees: boolean): string[] {
   if (!hasAttendees) return [];
   return attendees.map((attendee) => (attendee.diet === "" ? attendee.name : `${attendee.name}: ${attendee.diet}`));

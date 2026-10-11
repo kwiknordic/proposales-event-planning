@@ -19,7 +19,6 @@ export function changeId(index: number): string {
   return `c${index}`;
 }
 
-// One fixed wording for every change; only the id differs per question.
 function urgencyInstructions(id: string): string {
   return `Consider only the change with id "${id}". Does it need the hotel's prompt attention, for example a new or changed allergy or dietary need, a large change in the number of attendees, or a change of date or time?`;
 }

@@ -36,7 +36,6 @@ export function PlanningForm({ uuid, title, initialPlan, initialStatus, initialN
   const [notifiedAt, setNotifiedAt] = useState(initialNotifiedAt);
   // Demo only: a browser-local link to the email the hotel just got, so reviewers can see behind the curtain
   const [emailPreviewUrl, setEmailPreviewUrl] = useState<string | null>(null);
-  // A ref, not state: it is only read when saving, never rendered
   const baseline = useRef<Plan>(initialPlan);
   const [saveState, setSaveState] = useState<SaveState>({ kind: "idle" });
 

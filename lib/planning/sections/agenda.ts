@@ -49,7 +49,6 @@ export function summarizeAgenda(items: AgendaItem[]): string[] {
   return ["Agenda:", ...clean.map((item) => `- ${agendaLabel(item)}`)];
 }
 
-// "09:00 Welcome", or just "Welcome" when no time was given.
 function agendaLabel(item: AgendaItem): string {
   return [item.time, item.title].filter((part) => part !== "").join(" ");
 }

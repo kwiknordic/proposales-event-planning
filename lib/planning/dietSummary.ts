@@ -6,7 +6,6 @@ import { normalizeText } from "./normalize";
 
 export type DietCount = { diet: string; count: number };
 
-// Empty or one of these texts means the attendee has no dietary restriction.
 const NO_RESTRICTION_TEXTS = new Set(["", "none", "no", "-", "n/a"]);
 const NO_RESTRICTION = "no restriction";
 

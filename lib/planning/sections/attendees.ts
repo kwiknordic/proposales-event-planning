@@ -82,12 +82,10 @@ function splitPastedLine(line: string): [name: string, diet: string] {
   return [line, ""];
 }
 
-// Collapses runs of spaces and trims, so pasted names match the names typed in the form.
 function collapseSpaces(text: string): string {
   return text.replace(/\s+/g, " ").trim();
 }
 
-// "Hugo Berg (vegan)", or just "Hugo Berg" when no diet was given.
 function attendeeLabel(attendee: Attendee): string {
   return attendee.diet === "" ? attendee.name : `${attendee.name} (${attendee.diet})`;
 }

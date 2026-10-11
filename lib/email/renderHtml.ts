@@ -159,7 +159,6 @@ function renderList(items: string[]): string {
   return [`<ul style="${style.list}">`, ...listItems, "</ul>"].join("\n");
 }
 
-// "AV: Two microphones"; without a label the details stand alone.
 function labelled(label: string, details: string): string {
   return label === "" ? details : `${label}: ${details}`;
 }

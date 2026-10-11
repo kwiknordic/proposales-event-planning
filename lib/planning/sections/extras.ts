@@ -3,7 +3,6 @@
 import type { Change } from "../changes";
 import { matchByIdentity } from "../matchByIdentity";
 
-// Blank rows are form leftovers, not extras. Trimming keeps the client's text but drops stray spaces.
 export function cleanExtras(extras: string[]): string[] {
   return extras.map((extra) => extra.trim()).filter((extra) => extra !== "");
 }
