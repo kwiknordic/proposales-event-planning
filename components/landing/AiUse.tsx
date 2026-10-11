@@ -5,9 +5,9 @@ export function AiUse() {
   return (
     <section className="section-landing">
       <div className="container-wide">
-        <h2>AI use</h2>
+        <h2>Demo&apos;s use of AI</h2>
         <p className="lead mt-4 max-w-3xl">
-          I use AI for one narrow judgment: is this change urgent? Everything else follows simple rules that anyone
+          Demo uses AI for one narrow judgment: is this change urgent? Everything else follows simple rules that anyone
           can read and test.
         </p>
 
@@ -16,7 +16,7 @@ export function AiUse() {
             <h3>What it does</h3>
             <p className="mt-3">
               When the client changes their plan, the{" "}
-              <a href="https://docs.typesafe.ai">Jev model by TypeSafe AI</a> answers one yes/no question per
+              <a href="https://docs.typesafe.ai">Jev model</a> answers one yes/no question per
               change: does it need the hotel&apos;s prompt attention? Urgent changes, like a new nut allergy, go in a
               &quot;Needs attention&quot; box at the top of the email, and the subject starts with [Action needed].
             </p>
@@ -25,8 +25,7 @@ export function AiUse() {
             <h3>Why Jev</h3>
             <p className="mt-3">
               A busy hotel should not miss an allergy between reworded extras. Jev does not write text; it returns a
-              probability, so the code stays in control. I tuned the threshold on real examples: a new nut allergy
-              scores 0.97, a reworded extra 0.09.
+              probability, so the code stays in control.
             </p>
           </div>
           <div className="card">
